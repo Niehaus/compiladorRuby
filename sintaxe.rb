@@ -1,6 +1,6 @@
 require_relative 'analisador_lexico'
 require_relative 'conjFirst'
-require 'tree'
+require_relative 'tree'
 include Teste
 include ConjuntoFirst
 
@@ -30,54 +30,54 @@ module AnalisadorSintatico
     if @matriz[@index][1].to_s  == "INT"
       casa("INT")
       casa("MAIN")
-      #@root_node = Tree::TreeNode.new("MAIN")
       casa("LBRACKET")
       casa("RBRACKET")
       casa("LBRACE")
-      decl_comando()
+      node = AST.new('decl_comando')
+      ast = decl_comando(node)
       casa("RBRACE")
     else
       retorna_erro
     end
   end
 
-  def decl_comando()
+  def decl_comando(node)
     if @matriz[@index][1].to_s == "INT" or @matriz[@index][1].to_s == "FLOAT"
-      declaracao()
-      decl_comando()
+      declaracao(node)
+      decl_comando(node)
     elsif @matriz[@index][1].to_s == "LBRACE" or @matriz[@index][1].to_s == "ID" or @matriz[@index][1].to_s == "IF" or
       @matriz[@index][1].to_s == "WHILE" or @matriz[@index][1].to_s == "READ" or @matriz[@index][1].to_s == "PRINT" or
       @matriz[@index][1].to_s == "FOR"
-      comando()
-      decl_comando()
+      comando(node)
+      decl_comando(node)
     end
   end
 
-  def declaracao()
+  def declaracao(node)
     if @matriz[@index][1].to_s == "INT" or @matriz[@index][1].to_s == "FLOAT"
       tipo() 
       hash_simbolos()
       casa("ID") 
       #@root_node << Tree::TreeNode.new(@tabela_simbolos, @matriz[@index][1].to_s)
-      decl2()
+      decl2(node)
     else
       retorna_erro('declaracao')
     end
   end
 
-  def decl2()
+  def decl2(node)
     if @matriz[@index][1].to_s == "COMMA"
       casa("COMMA")
       hash_simbolos()
       casa("ID")
       #@root_node << Tree::TreeNode.new(hash_simbolos(), @matriz[@index][1].to_s)
-      decl2()
+      decl2(node)
     elsif @matriz[@index][1].to_s == "PCOMMA"
       casa("PCOMMA")
     elsif @matriz[@index][1].to_s == "ATTR"
       casa("ATTR")
       expressao()
-      decl2()
+      decl2(node)
     else
       retorna_erro('decl2')
     end
@@ -95,37 +95,37 @@ module AnalisadorSintatico
     end
   end
 
-  def comando()
+  def comando(node)
     if @matriz[@index][1].to_s == "LBRACE"
-      bloco()
+      bloco(node)
     elsif @matriz[@index][1].to_s == "ID"
-      atribuicao()
+      atribuicao(node)
     elsif @matriz[@index][1].to_s == "IF"
-      comando_se()
+      comando_se(node)
     elsif @matriz[@index][1].to_s == "WHILE"
       comando_enquanto()
     elsif @matriz[@index][1].to_s == "READ"
-      comando_read()
+      comando_read(node)
     elsif @matriz[@index][1].to_s == "PRINT"
-      comando_print()
+      comando_print(node)
     elsif @matriz[@index][1].to_s == "FOR"
-      comando_for()
+      comando_for(node)
     else
       retorna_erro('comando')
     end
   end
 
-  def bloco()
+  def bloco(node)
     if @matriz[@index][1].to_s == "LBRACE"
       casa("LBRACE")
-      decl_comando()
+      decl_comando()#ADD CHAMADA NODE AQUI
       casa("RBRACE")
     else
       retorna_erro('bloco')
     end
   end
 
-  def atribuicao()
+  def atribuicao(node)
     if @matriz[@index][1].to_s == "ID"
       hash_simbolos()
       casa("ID")
@@ -137,7 +137,7 @@ module AnalisadorSintatico
     end
   end
 
-  def comando_se()
+  def comando_se(node)
     if @matriz[@index][1].to_s == "IF"
       casa("IF")
       #CRIA filhos NÓ IF 
@@ -146,34 +146,34 @@ module AnalisadorSintatico
       expressao()
       casa("RBRACKET")
       #PREENCHE filhos NÓ DO C_TRUE  
-      comando()
+      comando()#PASSA NODE AQUI
       #PREENCHE filhos NÓ DO C_FALSE
-      comando_senao()
+      comando_senao()  #PASSA OUTRO NODE AQUI
     else
       retorna_erro('comando_se')
     end
   end
 
-  def comando_senao()
+  def comando_senao()#PASSA OUTRO NODE AQUI
     if @matriz[@index][1].to_s == "ELSE"
       casa("ELSE")
       comando()
     end
   end
 
-  def comando_enquanto()
+  def comando_enquanto(node)
     if @matriz[@index][1].to_s == "WHILE"
       casa("WHILE")
       casa("LBRACKET")
       expressao()
       casa("RBRACKET")
-      comando()
+      comando()#PASSA OUTRO NODE AQUI
     else
       retorna_erro('comando_enquanto')
     end
   end
 
-  def comando_read()
+  def comando_read(node)
     if @matriz[@index][1].to_s == "READ"
       casa("READ")
       casa("ID")
@@ -183,7 +183,7 @@ module AnalisadorSintatico
     end
   end
 
-  def comando_print()
+  def comando_print(node)
     if @matriz[@index][1].to_s == "PRINT"
       casa("PRINT")
       casa("LBRACKET")
@@ -195,7 +195,7 @@ module AnalisadorSintatico
     end
   end
 
-  def comando_for()
+  def comando_for(node)
     if @matriz[@index][1].to_s == "FOR"
       casa("FOR")
       casa("LBRACKET")

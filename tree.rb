@@ -1,9 +1,7 @@
-#estutura da arvore
-require 'tree'
- 
- class AST  
-    attr_writer :children, :tipo, :value, :nome
-    attr_reader :children, :tipo, :value, :nome
+#estrutura da arvore
+ class AST   
+    attr_accessor :nome, :children, :tipo, :value,:root_node
+    attr_reader :nome   
     
     def initialize(nome)
         self.nome = nome
@@ -13,27 +11,22 @@ require 'tree'
     end
 
     def treeLevel(level = 0)
-        ret = "\t"*level+ self.nome+"\n"
-        self.children.each do |child|
-            if !child.nil?
-                ret += child.treeLevel(level + 1) #soma 1 level
-            end
-        end
-        return ret
+        #definir nivel da arvore
     end
-
+    
     def seeChild
         puts self.nome
         self.children.each do |child|
-            child.seeChild
+            puts child
         end
     end
 
 end
 
 class If < AST
+    
     attr_writer :exp, :c_false, :c_true
-    attr_reader :nome, :exp, :c_false, :c_true
+    attr_reader :exp, :c_false, :c_true
     
     def initialize(exp, c_true, c_false)
         super("If")
@@ -59,18 +52,18 @@ end
 class Attr < AST
     attr_reader :nome
     def initialize(esq, op, dir)
-        @nome = "Assign"
-        #@children.push(esq)
-        #@children.push(dir)
-        @esq = esq
-        @token = @op = op
-        @right = right
+        self.nome = "Assign"
+        self.children.push(esq)
+        self.children.push(dir)
+        self.esq = esq
+        self.token = self.op = op
+        self.right = right
     end
 end
 
 class While < AST
-    attr_reader :nome, :exp, :commands
-    attr_writer :nome, :exp, :commands
+    attr_reader  :exp, :commands
+    attr_writer  :exp, :commands
 
     def initialize(exp,commands)
         super('While')
@@ -82,7 +75,7 @@ class While < AST
 end
 
 class Read < AST
-    attr_reader :nome
+    attr_reader :id
     def initialize(id)
         super('Read')
         self.children.push(id)
@@ -141,7 +134,7 @@ class ArithOp < Expr
         super('ArithOp',op,left,right)
     end
 
-    def seeChild
+    def evaluate
         if !self.left?nil
             valor_esq = self.left.seeChild
         end
@@ -167,6 +160,60 @@ class RelOp < Expr
     def initialize(left,op,right)
         super('RelOp',op,left,right)
     end
+
+    def evaluate
+        a = self.children[0].evaluate
+        b = self.children[1].__evaluate__()
+        if(self.op == '<')
+        	if(a.to_f < b.to_f)
+        		c = True
+        		return c
+        	else
+        		c = False
+                return c
+            end
+        elsif(self.op == '<=')
+        	if(a.to_f <= b.to_f)
+        		c = True
+        		return c
+        	else
+        		c = False
+                return c
+            end
+        elsif(self.op == '>')
+        	if(a.to_f > b.to_f)
+        		c = True
+        		return c
+        	else
+        		c = False
+                return c
+            end
+        elsif(self.op == '>=')
+        	if(a.to_f >= b.to_f)
+        		c = True
+        		return c
+        	else
+        		c = False
+                return c
+            end
+        elsif(self.op == '==')
+        	if(a.to_f == b.to_f)
+        		c = True
+        		return c
+        	else
+        		c = False
+                return c
+            end
+        elsif(self.op == '!=')
+        	if(a.to_f != b.to_f)
+        		c = True
+        		return c
+        	else
+        		c = False
+                return c    
+            end
+        end
+    end
 end
 
 class Id < AST
@@ -189,27 +236,5 @@ class Num < AST
     
     def seeChild
         return float(self.value)
+    end
 end
-#ontIF = {'info' => ['astnode','0']}
-
-#root_node = Tree::TreeNode.new('MAIN')
-#root_node << Tree::TreeNode.new("IF", contIF['info']) << Tree::TreeNode.new("exp", 'exp content') 
-#root_node['IF'] << Tree::TreeNode.new("c_true", "c_true content")
-#root_node['IF'] << Tree::TreeNode.new("c_false", "c_false content")
-#root_node << Tree::TreeNode.new("WHILE")
-
-#puts root_node['IF']['c_false'].parent
-#puts root_node['IF'].content
-#root_node.print_tree
-
-node = []
-puts node
-
-
-
-node << AST.new('MAIN')
-
-
-node << If.new("a > b", "a++", "b++")
-#node['MAIN'] << If.new("exp","ctrue","cfalse")
-#node << While.new("exp","comando")
