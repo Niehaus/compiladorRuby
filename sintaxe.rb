@@ -1,6 +1,6 @@
 require_relative 'analisador_lexico'
 require_relative 'conjFirst'
-require_relative 'tree'
+require 'tree'
 include Teste
 include ConjuntoFirst
 
@@ -8,7 +8,6 @@ module AnalisadorSintatico
   def construtor
     Teste::le_arquivo
     @token_entrada, @matriz = Teste::automato
-    #@node = AST.new("astnode")
     puts '------------Token Buffer------------'
     puts 'Token          | Num. da Linha | Lexema'
     @index = 0
@@ -17,22 +16,21 @@ module AnalisadorSintatico
     @tok_esperado
   end
   def saida
-    puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
+   #puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
   end
 
   def analise_sintatica()
     construtor
     programa()
-    puts @tabela_simbolos
+    #puts @tabela_simbolos
+    #@root_node.print_tree
   end
 
   def programa()
     if @matriz[@index][1].to_s  == "INT"
       casa("INT")
       casa("MAIN")
-      #node = AST::TreeNode("astnode")
-      #no = AST.new("MAIN")
-      #no.seeChild
+      #@root_node = Tree::TreeNode.new("MAIN")
       casa("LBRACKET")
       casa("RBRACKET")
       casa("LBRACE")
@@ -57,10 +55,10 @@ module AnalisadorSintatico
 
   def declaracao()
     if @matriz[@index][1].to_s == "INT" or @matriz[@index][1].to_s == "FLOAT"
-      tipo()
+      tipo() 
       hash_simbolos()
-      casa("ID")
-     # node << Tree::TreeNode.new("ID", @matriz[@index][1].to_s)
+      casa("ID") 
+      #@root_node << Tree::TreeNode.new(@tabela_simbolos, @matriz[@index][1].to_s)
       decl2()
     else
       retorna_erro('declaracao')
@@ -72,6 +70,7 @@ module AnalisadorSintatico
       casa("COMMA")
       hash_simbolos()
       casa("ID")
+      #@root_node << Tree::TreeNode.new(hash_simbolos(), @matriz[@index][1].to_s)
       decl2()
     elsif @matriz[@index][1].to_s == "PCOMMA"
       casa("PCOMMA")
@@ -141,10 +140,14 @@ module AnalisadorSintatico
   def comando_se()
     if @matriz[@index][1].to_s == "IF"
       casa("IF")
+      #CRIA filhos NÓ IF 
       casa("LBRACKET")
+      #preenche filhos nó do exp
       expressao()
       casa("RBRACKET")
+      #PREENCHE filhos NÓ DO C_TRUE  
       comando()
+      #PREENCHE filhos NÓ DO C_FALSE
       comando_senao()
     else
       retorna_erro('comando_se')

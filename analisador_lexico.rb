@@ -43,7 +43,7 @@ module Teste
       puts "Carctere #{@letras[@index]} não encontrado na linguagem"
     end
     if @letras[@index] == :EOF
-      puts "Analise léxica concluída!!"
+      #puts "Analise léxica concluída!!"
       #puts @tokens 
       return
     end
