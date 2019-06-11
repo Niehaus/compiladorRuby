@@ -1,29 +1,30 @@
 #estrutura da arvore
  class AST   
-    attr_accessor :nome, :children, :tipo, :value,:root_node
-    attr_reader :nome   
+    attr_accessor :nome, :children, :tipo, :value,:root_node,:level
+    attr_reader :nome,:level   
     
     def initialize(nome)
         self.nome = nome
         self.children = []
         self.tipo = nil
         self.value = nil
+        self.level = 0
     end
 
     def treeLevel(level = 0)
         #definir nivel da arvore
     end
     
-    def seeChild
-        puts "<#{self.nome}>"
+    def seeChild(level)
+        puts "  " *(0 + level) +"<#{self.nome}>"
         self.children.each do |child|
             if child.class != String
-               child.seeChild
+                child.seeChild(level + 1)
             else 
-                puts child
+                puts "  " *(1 + level) + "#{child}"
             end
         end
-         puts "</#{self.nome}>" 
+         puts "  " *(0 + level) +"</#{self.nome}>" 
     end
 
 end
@@ -160,4 +161,4 @@ while_node = While.new("exp","commands")
 
 root_node.children << if_node
 root_node.children << while_node
-root_node.seeChild
+root_node.seeChild(root_node.level)
