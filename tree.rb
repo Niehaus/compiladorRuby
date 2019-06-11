@@ -15,12 +15,30 @@
     end
     
     def seeChild
-        puts self.nome
+        puts "<#{self.nome}>"
         self.children.each do |child|
-            puts child
+            if child.class != String
+               child.seeChild
+            else 
+                puts child
+            end
         end
+         puts "</#{self.nome}>" 
     end
 
+end
+
+class Attr < AST
+    attr_writer :esq, :op, :token, :dir
+    attr_reader :nome, :esq, :op, :token, :dir
+    def initialize(esq, op, dir)
+        super("Attr")
+        self.children.push(esq)
+        self.children.push(dir)
+        self.esq = esq
+        self.token = self.op = op
+        self.dir = dir
+    end
 end
 
 class If < AST
@@ -49,18 +67,6 @@ class DelimitadorBloco < AST
     end
 end
 
-class Attr < AST
-    attr_reader :nome
-    def initialize(esq, op, dir)
-        self.nome = "Assign"
-        self.children.push(esq)
-        self.children.push(dir)
-        self.esq = esq
-        self.token = self.op = op
-        self.right = right
-    end
-end
-
 class While < AST
     attr_reader  :exp, :commands
     attr_writer  :exp, :commands
@@ -75,7 +81,7 @@ class While < AST
 end
 
 class Read < AST
-    attr_reader :id
+    attr_reader :id,:nome
     def initialize(id)
         super('Read')
         self.children.push(id)
@@ -84,7 +90,9 @@ class Read < AST
 end
 
 class Print < AST
+    attr_reader :nome
     def initialize(exp)
+        super("Print")
         self.children.push(exp)
         self.exp = exp
     end
@@ -94,11 +102,9 @@ class Expr < AST
     attr_reader :op
     def initialize(nome,op,left,right)
         super(nome)
+        self.op = op
         self.children.push(left)
         self.children.push(right)
-        self.left
-        self.op = op
-        self.right = right
     end
 end
 
@@ -106,113 +112,18 @@ class LogicalOp < Expr
     def initialize(op,left,right)   
         super('LogicalOp',op,left,right)      
     end
-        def seeChild
-            valor_esq = self.left.seeChild
-            valor_dir = self.right.seeChild
-            if self.op == "&&"
-                if valor_esq == 0
-                    return 0
-                elsif valor_dir == 0
-                    return 0
-                else
-                    return 1
-                end
-            elsif self.op == "||"
-                if valor_esq != 0
-                    return 1
-                elsif valor_dir != 0
-                    return 1 
-                else
-                    return 0
-                end
-            end
-        end
+    
 end
 
 class ArithOp < Expr
     def initialize(op,left,right)
         super('ArithOp',op,left,right)
     end
-
-    def evaluate
-        if !self.left?nil
-            valor_esq = self.left.seeChild
-        end
-        if !self.right?nil
-            valor_dir = self.right.seeChild
-        end
-        if self.op == "+"
-            return valor_esq + valor_dir
-        end
-        if self.op == "-"
-            return valor_esq - valor_dir
-        end
-        if self.op == "*"
-            return valor_esq * valor_dir
-        end
-        if self.op == "/"
-            return valor_esq / valor_dir
-        end
-    end
 end
 
 class RelOp < Expr
     def initialize(left,op,right)
         super('RelOp',op,left,right)
-    end
-
-    def evaluate
-        a = self.children[0].evaluate
-        b = self.children[1].__evaluate__()
-        if(self.op == '<')
-        	if(a.to_f < b.to_f)
-        		c = True
-        		return c
-        	else
-        		c = False
-                return c
-            end
-        elsif(self.op == '<=')
-        	if(a.to_f <= b.to_f)
-        		c = True
-        		return c
-        	else
-        		c = False
-                return c
-            end
-        elsif(self.op == '>')
-        	if(a.to_f > b.to_f)
-        		c = True
-        		return c
-        	else
-        		c = False
-                return c
-            end
-        elsif(self.op == '>=')
-        	if(a.to_f >= b.to_f)
-        		c = True
-        		return c
-        	else
-        		c = False
-                return c
-            end
-        elsif(self.op == '==')
-        	if(a.to_f == b.to_f)
-        		c = True
-        		return c
-        	else
-        		c = False
-                return c
-            end
-        elsif(self.op == '!=')
-        	if(a.to_f != b.to_f)
-        		c = True
-        		return c
-        	else
-        		c = False
-                return c    
-            end
-        end
     end
 end
 
@@ -222,19 +133,31 @@ class Id < AST
     def initialize(token)
         super('Id')
         self.token = token
-        self.value = token.value
+        self.value = token.value ##pegar tal token da tabela de simbolos(mudar)
     end
 end
 
 class Num < AST
-    def initialize(token)
+    def initialize(token,tipo)
         super('Num')
         self.token = token
-        self.value = token.value
+        if tipo == 0
+            self.value = token.lexema.to_i
+        else
+            self.value = token.lexema.to_f
+        end
+        self.tipo = tipo
     end
        
-    
-    def seeChild
-        return float(self.value)
-    end
 end
+
+
+#node = If.new("exp","ctrue",If.new("exp2","ctrue2","cfalse2"))
+root_node = AST.new("Main")
+attr_node = Attr.new("esq","op","dir")
+if_node = If.new("exp","c_true",attr_node)
+while_node = While.new("exp","commands")
+
+root_node.children << if_node
+root_node.children << while_node
+root_node.seeChild
