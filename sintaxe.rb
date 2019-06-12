@@ -40,6 +40,7 @@ module AnalisadorSintatico
       ast = decl_comando(node)
       node.seeChild(node.level)
       casa("RBRACE")
+      return ast # dentro ou fora?
     else
       retorna_erro
     end
@@ -169,6 +170,7 @@ module AnalisadorSintatico
       if_node.children.push(retorno)
       comando_senao(if_node)  
       node.children.push(if_node)
+      return node
     else
       retorna_erro('comando_se')
     end
@@ -189,8 +191,8 @@ module AnalisadorSintatico
 
   def comando_enquanto(node)
     if @matriz[@index][1].to_s == "WHILE"
-      #while_node = While("exp","commands")
-      while_node = AST.new("While")
+      while_node = While.new("While")
+      #while_node = AST.new("While")
       casa("WHILE")
       casa("LBRACKET")
       expr_node = expressao()

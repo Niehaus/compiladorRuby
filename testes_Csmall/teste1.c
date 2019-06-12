@@ -1,9 +1,10 @@
 int main() {
    int a,b;
-   while (a > b)
+   if (a > b)
    {
       a = 1;
    }
+   
    
 
    }

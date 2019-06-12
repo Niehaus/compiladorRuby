@@ -1,8 +1,7 @@
 #estrutura da arvore
  class AST   
-    attr_accessor :nome, :children, :tipo, :value,:root_node,:level
-    attr_reader :nome, :level   
-    
+    attr_accessor :nome, :children, :tipo, :value,:root_node,:level   
+
     def initialize(nome)
         self.nome = nome
         self.children = []
@@ -25,7 +24,7 @@
 
 end
 
-class Attr < AST
+class Attr < AST #talvez altere
     attr_writer :esq, :op, :token, :dir
     attr_reader :nome, :esq, :op, :token, :dir
     def initialize(esq, op, dir)
@@ -39,41 +38,14 @@ class Attr < AST
 end
 
 class If < AST
-    
-    attr_writer :exp, :c_false, :c_true
-    attr_reader :exp, :c_false, :c_true
-    
-    def initialize(exp, c_true, c_false)
+    def initialize()
         super("If")
-        self.children.push(exp)
-        self.children.push(c_true)
-        self.children.push(c_false)
-        self.exp = exp
-        self.c_true = c_true
-        self.c_false = c_false
-    end
-
-end
-
-class DelimitadorBloco < AST
-    attr_reader :nome
-    def initialize
-        puts "Criando delimitador de Bloco"
-        @nome = "Block"
-       # @children = []
     end
 end
 
 class While < AST
-    attr_reader  :exp, :commands
-    attr_writer  :exp, :commands
-
-    def initialize(exp,commands)
+    def initialize(exp)
         super('While')
-        self.children.push(exp)
-        self.children.push(commands)
-        self.exp = exp
-        self.commands = commands
     end
 end
 
@@ -106,10 +78,10 @@ class Expr < AST
 end
 
 class LogicalOp < Expr
+    attr_accessor :op,:left,:right
     def initialize(op,left,right)   
         super('LogicalOp',op,left,right)      
     end
-    
 end
 
 class ArithOp < Expr
@@ -125,7 +97,7 @@ class RelOp < Expr
     end
 end
 
-class Id < AST
+class Id < AST ##precisa rever
     attr_reader :token, :value
     attr_accessor :token
     def initialize(token)
@@ -135,7 +107,7 @@ class Id < AST
     end
 end
 
-class Num < AST
+class Num < AST #precisa rever também
     attr_accessor :token, :tipo
 
     def initialize(token,tipo)
@@ -147,11 +119,17 @@ class Num < AST
             #self.value = token.lexema.to_f
         end
         self.tipo = tipo
-    end
-       
+    end       
 end
 
-
+class DelimitadorBloco < AST
+    attr_reader :nome
+    def initialize
+        puts "Criando delimitador de Bloco"
+        @nome = "Block"
+       # @children = []
+    end
+end
 #node = If.new("exp","ctrue",If.new("exp2","ctrue2","cfalse2"))
 #root_node = AST.new("Main")
 #attr_node = Attr.new("esq","op","dir")
