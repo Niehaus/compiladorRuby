@@ -1,7 +1,7 @@
 #estrutura da arvore
  class AST   
     attr_accessor :nome, :children, :tipo, :value,:root_node,:level
-    attr_reader :nome,:level   
+    attr_reader :nome, :level   
     
     def initialize(nome)
         self.nome = nome
@@ -11,10 +11,6 @@
         self.level = 0
     end
 
-    def treeLevel(level = 0)
-        #definir nivel da arvore
-    end
-    
     def seeChild(level)
         puts "  " *(0 + level) +"<#{self.nome}>"
         self.children.each do |child|
@@ -82,7 +78,7 @@ class While < AST
 end
 
 class Read < AST
-    attr_reader :id,:nome
+    attr_accessor :id,:nome
     def initialize(id)
         super('Read')
         self.children.push(id)
@@ -91,7 +87,7 @@ class Read < AST
 end
 
 class Print < AST
-    attr_reader :nome
+    attr_accessor :exp
     def initialize(exp)
         super("Print")
         self.children.push(exp)
@@ -123,6 +119,7 @@ class ArithOp < Expr
 end
 
 class RelOp < Expr
+    attr_accessor :op,:left,:right
     def initialize(left,op,right)
         super('RelOp',op,left,right)
     end
@@ -130,22 +127,24 @@ end
 
 class Id < AST
     attr_reader :token, :value
-
+    attr_accessor :token
     def initialize(token)
         super('Id')
         self.token = token
-        self.value = token.value ##pegar tal token da tabela de simbolos(mudar)
+        #self.value = token.value ##pegar tal token da tabela de simbolos(mudar)
     end
 end
 
 class Num < AST
+    attr_accessor :token, :tipo
+
     def initialize(token,tipo)
         super('Num')
         self.token = token
         if tipo == 0
-            self.value = token.lexema.to_i
+           # self.value = token.lexema.to_i
         else
-            self.value = token.lexema.to_f
+            #self.value = token.lexema.to_f
         end
         self.tipo = tipo
     end
@@ -154,11 +153,14 @@ end
 
 
 #node = If.new("exp","ctrue",If.new("exp2","ctrue2","cfalse2"))
-root_node = AST.new("Main")
-attr_node = Attr.new("esq","op","dir")
-if_node = If.new("exp","c_true",attr_node)
-while_node = While.new("exp","commands")
+#root_node = AST.new("Main")
+#attr_node = Attr.new("esq","op","dir")
+#if_node = If.new("exp","c_true",attr_node)
+#while_node = While.new("exp","commands")
 
-root_node.children << if_node
-root_node.children << while_node
-root_node.seeChild(root_node.level)
+#root_node.children << if_node
+#root_node.children << while_node
+#puts "-" * 15
+#puts "| Arvore - ASA |"
+#puts "-" * 15
+#root_node.seeChild(root_node.level)

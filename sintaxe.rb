@@ -8,22 +8,25 @@ module AnalisadorSintatico
   def construtor
     Teste::le_arquivo
     @token_entrada, @matriz = Teste::automato
-    puts '------------Token Buffer------------'
-    puts 'Token          | Num. da Linha | Lexema'
+   # puts '------------Token Buffer------------'
+   # puts 'Token          | Num. da Linha | Lexema'
+    puts "-" * 15
+    puts "| Arvore - ASA |"
+    puts "-" * 15
     @index = 0
     @tabela_simbolos = {}
     @tipo_variavel
     @tok_esperado
+    @int_type = 0
+    @float_type = 1
   end
   def saida
-   #puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
+    #puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
   end
 
   def analise_sintatica()
     construtor
-    programa()
-    #puts @tabela_simbolos
-    #@root_node.print_tree
+    programa()  
   end
 
   def programa()
@@ -33,8 +36,9 @@ module AnalisadorSintatico
       casa("LBRACKET")
       casa("RBRACKET")
       casa("LBRACE")
-      node = AST.new('decl_comando')
+      node = AST.new('Main')
       ast = decl_comando(node)
+      node.seeChild(node.level)
       casa("RBRACE")
     else
       retorna_erro
@@ -43,13 +47,15 @@ module AnalisadorSintatico
 
   def decl_comando(node)
     if @matriz[@index][1].to_s == "INT" or @matriz[@index][1].to_s == "FLOAT"
-      declaracao(node)
-      decl_comando(node)
+      node1 = declaracao(node)
+      return decl_comando(node1)
     elsif @matriz[@index][1].to_s == "LBRACE" or @matriz[@index][1].to_s == "ID" or @matriz[@index][1].to_s == "IF" or
       @matriz[@index][1].to_s == "WHILE" or @matriz[@index][1].to_s == "READ" or @matriz[@index][1].to_s == "PRINT" or
       @matriz[@index][1].to_s == "FOR"
-      comando(node)
-      decl_comando(node)
+      node1 = comando(node)
+      return decl_comando(node1)
+    else
+      return node
     end
   end
 
@@ -57,30 +63,35 @@ module AnalisadorSintatico
     if @matriz[@index][1].to_s == "INT" or @matriz[@index][1].to_s == "FLOAT"
       tipo() 
       hash_simbolos()
+      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
       casa("ID") 
-      #@root_node << Tree::TreeNode.new(@tabela_simbolos, @matriz[@index][1].to_s)
-      decl2(node)
+      return decl2(node)
     else
       retorna_erro('declaracao')
     end
+    return node #retorna nó?
   end
 
   def decl2(node)
     if @matriz[@index][1].to_s == "COMMA"
       casa("COMMA")
       hash_simbolos()
+      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
       casa("ID")
-      #@root_node << Tree::TreeNode.new(hash_simbolos(), @matriz[@index][1].to_s)
-      decl2(node)
+      return decl2(node)
     elsif @matriz[@index][1].to_s == "PCOMMA"
       casa("PCOMMA")
+      return node
     elsif @matriz[@index][1].to_s == "ATTR"
       casa("ATTR")
-      expressao()
-      decl2(node)
+      expr_node = expressao()
+      attr_node = Attr.new(id_node,"=",expr_node)
+      node.children.push(attr_node)
+      return decl2(node)
     else
       retorna_erro('decl2')
     end
+    return node
   end
 
   def tipo()
@@ -97,19 +108,19 @@ module AnalisadorSintatico
 
   def comando(node)
     if @matriz[@index][1].to_s == "LBRACE"
-      bloco(node)
+     return bloco(node)
     elsif @matriz[@index][1].to_s == "ID"
-      atribuicao(node)
+      return atribuicao(node)
     elsif @matriz[@index][1].to_s == "IF"
-      comando_se(node)
+      return comando_se(node)
     elsif @matriz[@index][1].to_s == "WHILE"
-      comando_enquanto()
+      return comando_enquanto(node)
     elsif @matriz[@index][1].to_s == "READ"
-      comando_read(node)
+      return comando_read(node)
     elsif @matriz[@index][1].to_s == "PRINT"
-      comando_print(node)
+      return comando_print(node)
     elsif @matriz[@index][1].to_s == "FOR"
-      comando_for(node)
+      return comando_for(node)
     else
       retorna_erro('comando')
     end
@@ -118,84 +129,118 @@ module AnalisadorSintatico
   def bloco(node)
     if @matriz[@index][1].to_s == "LBRACE"
       casa("LBRACE")
-      decl_comando()#ADD CHAMADA NODE AQUI
+      block = AST.new("Bloco")
+      retorno = decl_comando(block)
       casa("RBRACE")
+      node.children.push(retorno)
     else
       retorna_erro('bloco')
     end
+    return node#fora ou dentro do if?
   end
 
   def atribuicao(node)
     if @matriz[@index][1].to_s == "ID"
       hash_simbolos()
+      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
       casa("ID")
       casa("ATTR")
-      expressao()
+      expro_node = expressao()
+      node.children.push(Attr.new(id_node,"=",expro_node))
       casa("PCOMMA")
+      return node
     else
       retorna_erro('atribuicao')
     end
+    return node#fora ou dentro do if??
   end
 
   def comando_se(node)
     if @matriz[@index][1].to_s == "IF"
-      casa("IF")
-      #CRIA filhos NÓ IF 
+      if_node = AST.new("If")
+      #if_node = If.new("exp","ctrue","cfalse")
+      casa("IF") 
       casa("LBRACKET")
-      #preenche filhos nó do exp
-      expressao()
+      expr_node = expressao()
+      if_node.children.push(expr_node)
       casa("RBRACKET")
-      #PREENCHE filhos NÓ DO C_TRUE  
-      comando()#PASSA NODE AQUI
-      #PREENCHE filhos NÓ DO C_FALSE
-      comando_senao()  #PASSA OUTRO NODE AQUI
+      c_true = AST.new("c_true")
+      retorno = comando(c_true)
+      if_node.children.push(retorno)
+      comando_senao(if_node)  
+      node.children.push(if_node)
     else
       retorna_erro('comando_se')
     end
+    return node#fora ou dentro do if?
   end
 
-  def comando_senao()#PASSA OUTRO NODE AQUI
+  def comando_senao(if_node)
     if @matriz[@index][1].to_s == "ELSE"
+      c_false = AST.new("c_false")
       casa("ELSE")
-      comando()
+      retorno = comando(c_false)
+      if_node.children.push(retorno)
+      return if_node #claramente dentro do 'if'
+    else
+      return if_node
     end
   end
 
   def comando_enquanto(node)
     if @matriz[@index][1].to_s == "WHILE"
+      #while_node = While("exp","commands")
+      while_node = AST.new("While")
       casa("WHILE")
       casa("LBRACKET")
-      expressao()
+      expr_node = expressao()
+      while_node.children.push(expr_node)
       casa("RBRACKET")
-      comando()#PASSA OUTRO NODE AQUI
+      c_true = AST.new("c_true")
+      retorno = comando(c_true)
+      while_node.children.push(retorno)
+      node.children.push(while_node)
+      return node
     else
       retorna_erro('comando_enquanto')
     end
+    return node #dentro ou fora do if???
   end
 
   def comando_read(node)
     if @matriz[@index][1].to_s == "READ"
+      read_node = Read.new("Read")
       casa("READ")
+      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
+      read_node.children.push(id_node)
       casa("ID")
       casa("PCOMMA")
+      node.children.push(read_node)
+      return node #dentro ou fora do if???
     else
       retorna_erro('comando_read')
     end
+    
   end
 
   def comando_print(node)
     if @matriz[@index][1].to_s == "PRINT"
+      print_node = Print.new("Print")
       casa("PRINT")
       casa("LBRACKET")
-      expressao()
+      expr_node =  expressao()
+      print_node.children.push(expr_node)
       casa("RBRACKET")
       casa("PCOMMA")
+      node.children.push(print_node)
     else
       retorna_erro('comando_print')
     end
+    return node #dentro ou fora do if???
   end
 
-  def comando_for(node)
+  #pensar sobre
+  def comando_for()
     if @matriz[@index][1].to_s == "FOR"
       casa("FOR")
       casa("LBRACKET")
@@ -222,18 +267,36 @@ module AnalisadorSintatico
 
   def expressao()
     if @matriz[@index][1].to_s == "ID" or @matriz[@index][1].to_s == "INTEGER_CONST" or @matriz[@index][1].to_s == "FLOAT_CONST" or @matriz[@index][1].to_s == "LBRACKET"
-      adicao()
-      relacao_opc()
+      expr = adicao()
+      return relacao_opc(expr)
     else
       retorna_erro('expressao')
     end
   end
 
-  def relacao_opc()
-    if @matriz[@index][1].to_s == "LT" or @matriz[@index][1].to_s == "LE" or @matriz[@index][1].to_s == "GT" or @matriz[@index][1].to_s == "GE"
+  def relacao_opc(expr)
+    if @matriz[@index][1].to_s == "LT" 
       op_rel()
-      adicao()
-      relacao_opc()
+      expr2 = adicao()
+      menor_node = RelOp.new(expr,"<",expr2)
+      return relacao_opc(menor_node)
+    elsif @matriz[@index][1].to_s == "LE"
+      op_rel()
+      expr2 = adicao()
+      menorigual_node = RelOp.new(expr,"<=",expr2)
+      return relacao_opc(menorigual_node)
+    elsif @matriz[@index][1].to_s == "GT"
+       op_rel()
+      expr2 = adicao()
+      maior_node = RelOp.new(expr,">",expr2)
+      return relacao_opc(maior_node)
+    elsif @matriz[@index][1].to_s == "GE"
+      op_rel()
+      expr2 = adicao()
+      maiorigual_node = RelOp.new(expr,">=",expr2)
+      return relacao_opc(maiorigual_node)
+    else
+      return expr
     end
   end
 
@@ -253,18 +316,26 @@ module AnalisadorSintatico
 
   def adicao()
     if @matriz[@index][1].to_s == "ID" or @matriz[@index][1].to_s == "INTEGER_CONST" or @matriz[@index][1].to_s == "FLOAT_CONST" or @matriz[@index][1].to_s == "LBRACKET"
-      termo()
-      adicao_opc()
+      expr = termo()
+      adicao_opc(expr)
     else
       retorna_erro('adicao')
     end
   end
 
-  def adicao_opc()
-    if @matriz[@index][1].to_s == "PLUS" or @matriz[@index][1].to_s == "MINUS"
+  def adicao_opc(expr)
+    if @matriz[@index][1].to_s == "PLUS" 
       op_adicao()
-      termo()
-      adicao_opc()
+      expr2 = termo()
+      plus_node = ArithOp(expr,"+",expr2)
+      return adicao_opc(plus_node)
+    elsif  @matriz[@index][1].to_s == "MINUS"
+      op_adicao()
+      expr2 = termo()
+      minus_node = ArithOp(expr,"-",expr2)
+      return adicao_opc(minus_node)
+    else
+      return expr
     end
   end
 
@@ -280,18 +351,26 @@ module AnalisadorSintatico
 
   def termo()
     if @matriz[@index][1].to_s == "ID" or @matriz[@index][1].to_s == "INTEGER_CONST" or @matriz[@index][1].to_s == "FLOAT_CONST" or @matriz[@index][1].to_s == "LBRACKET"
-      fator()
-      termo_opc()
+      expr = fator()
+      return termo_opc(expr)
     else
       retorna_erro('termo')
     end
   end
 
-  def termo_opc()
-    if @matriz[@index][1].to_s == "MULT" or @matriz[@index][1].to_s == "DIV"
+  def termo_opc(expr)
+    if @matriz[@index][1].to_s == "MULT" 
       op_mult()
-      fator()
-      termo_opc()
+      expr2 = fator()
+      mult_node = ArithOp.new(expr,"*",expr2)
+      return termo_opc(expr2)
+    elsif @matriz[@index][1].to_s == "DIV"
+      op_mult()
+      expr2 = fator()
+      div_node = ArithOp.new(expr,"/",expr2)
+      return termo_opc(expr2)
+    else
+      return expr
     end
   end
 
@@ -308,15 +387,22 @@ module AnalisadorSintatico
   def fator()
     if @matriz[@index][1].to_s == "ID"
       hash_simbolos()
+      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
       casa("ID")
+      return id_node
     elsif @matriz[@index][1].to_s == "INTEGER_CONST"
+      num_node = Num.new(@tabela_simbolos[@matriz[@index][0]],@int_type)
       casa("INTEGER_CONST")
+      return num_node
     elsif @matriz[@index][1].to_s == "FLOAT_CONST"
+      num_node = Num.new(@tabela_simbolos[@matriz[@index][0]],@float_type)
       casa("FLOAT_CONST")
+      return num_node
     elsif @matriz[@index][1].to_s == "LBRACKET"
       casa("LBRACKET")
-      expressao()
+      expr = expressao()
       casa("RBRACKET")
+      return expr
     else
       retorna_erro('fator')
     end

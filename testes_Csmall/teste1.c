@@ -1,10 +1,9 @@
-int main(){
-   int a,b, c, d, e;
- 
-   if(a > c) {
-      c = 7;
-      a = a+c;
+int main() {
+   int a,b;
+   while (a > b)
+   {
+      a = 1;
    }
-   else
-      b = 1;
-}
+   
+
+   }
