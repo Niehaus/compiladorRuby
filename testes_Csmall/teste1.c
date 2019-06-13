@@ -1,8 +1,14 @@
 int main()
 {
-   int x = 2, y = 1, z;
-   if (x + y + x)
-      z = 1;
-   else
-      z = 0;
+   int x = 1, y = 10;
+   float a = 2, z = 1000;
+   while (y > 1)
+   {
+      y = y - 1;
+      x = x * 2;
+      z = z / x;
+   }
+   print(x);
+   print(z);
+   print(x / (z - y));
 }

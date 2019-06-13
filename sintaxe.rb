@@ -21,7 +21,7 @@ module AnalisadorSintatico
     @float_type = 1
   end
   def saida
-   # puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
+   #puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
   end
 
   def analise_sintatica()
@@ -400,11 +400,11 @@ module AnalisadorSintatico
       casa("ID")
       return id_node
     elsif @matriz[@index][1].to_s == "INTEGER_CONST"
-      num_node = Num.new(@matriz[@index][0],@int_type)
+      num_node = Num.new(@matriz[@index][0].join,@int_type)
       casa("INTEGER_CONST")
       return num_node
     elsif @matriz[@index][1].to_s == "FLOAT_CONST"
-      num_node = Num.new(@matriz[@index][0],@float_type)
+      num_node = Num.new(@matriz[@index][0].join,@float_type)
       casa("FLOAT_CONST")
       return num_node
     elsif @matriz[@index][1].to_s == "LBRACKET"

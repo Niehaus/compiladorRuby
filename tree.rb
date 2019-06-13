@@ -135,10 +135,10 @@ class Num < AST #precisa rever também
         super('Num')
         self.lexema = lexema
         if tipo == 0
-          self.value = self.lexema[0].to_i
+          self.value = self.lexema.to_i
           self.tipo = 'Integer'
         else
-           self.value = self.lexema[0].to_f
+           self.value = self.lexema.to_f
           self.tipo = 'Float'
         end
     end       
