@@ -209,18 +209,17 @@ module AnalisadorSintatico
 
   def comando_read(node)
     if @matriz[@index][1].to_s == "READ"
-      read_node = Read.new("Read")
+      read_node = Read.new
       casa("READ")
-      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
-      read_node.children.push(id_node)
+      expr_node =  expressao() #n sei se é isso mas deu certo
+      read_node.children.push(expr_node)
       casa("ID")
       casa("PCOMMA")
       node.children.push(read_node)
-      return node #dentro ou fora do if???
+      return node 
     else
       retorna_erro('comando_read')
     end
-    
   end
 
   def comando_print(node)
@@ -237,7 +236,6 @@ module AnalisadorSintatico
     else
       retorna_erro('comando_print')
     end
-    return node #dentro ou fora do if???
   end
 
   #pensar sobre

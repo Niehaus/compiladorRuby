@@ -72,7 +72,7 @@ class For < AST
 end
 
 class Read < AST
-    def initialize(id)
+    def initialize
         super('Read')
     end
 end
@@ -138,7 +138,7 @@ class Num < AST #precisa rever também
           self.value = self.lexema.to_i
           self.tipo = 'Integer'
         else
-           self.value = self.lexema.to_f
+          self.value = self.lexema.to_f
           self.tipo = 'Float'
         end
     end       
@@ -149,15 +149,3 @@ class DelimitadorBloco < AST
         super("Bloco")
     end
 end
-#node = If.new("exp","ctrue",If.new("exp2","ctrue2","cfalse2"))
-#root_node = AST.new("Main")
-#attr_node = Attr.new("esq","op","dir")
-#if_node = If.new("exp","c_true",attr_node)
-#while_node = While.new("exp","commands")
-
-#root_node.children << if_node
-#root_node.children << while_node
-#puts "-" * 15
-#puts "| Arvore - ASA |"
-#puts "-" * 15
-#root_node.seeChild(root_node.level)
