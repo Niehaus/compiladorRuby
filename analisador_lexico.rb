@@ -44,7 +44,7 @@ module Teste
     end
     if @letras[@index] == :EOF
       #puts "Analise léxica concluída!!"
-      #puts @tokens 
+      #puts @tokens
       return
     end
     automato
@@ -118,7 +118,6 @@ module Teste
     else
       puts "Carctere #{@letras[@index]} não encontrado na linguagem. Linha #{@linha}"
     end
-     #puts @concatena_simbolos
   end
 end
 

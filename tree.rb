@@ -11,15 +11,31 @@
     end
 
     def seeChild(level)
-        puts "  " *(0 + level) +"<#{self.nome}>"
+        if self.nome == 'RelOp' or self.nome == "ArithOp"
+            puts "   " *(0 + level) +"<#{self.nome} op='#{self.op}'>"
+        elsif self.nome == "c_true" or self.nome  == "c_false"
+            #não printa nda pra isso n aparecer
+        elsif self.nome  == "Num"
+            puts "   " *(0 + level) +"<#{self.nome} value= #{self.value} type='#{self.tipo}'/>"
+        elsif self.nome == "Id"
+            puts "   " *(0 + level) +"<#{self.nome} lexema='#{self.lexema}' type='#{self.tipo}'/>"
+        else
+            puts "   " *(0 + level) +"<#{self.nome}>"
+        end
         self.children.each do |child|
-            if child.class != String
+            if child.class != String && child.class != NilClass
                 child.seeChild(level + 1)
             else 
-                puts "  " *(1 + level) + "#{child}"
+                puts "      " *(0 + level) + "#{child}"
             end
         end
-         puts "  " *(0 + level) +"</#{self.nome}>" 
+        if self.nome == "c_true" or self.nome  == "c_false"
+            #não printa nda pra isso n aparecer
+        elsif self.nome == "Id" or self.nome  == "Num"
+           #não printa nada pra isso n aparecer 
+        else
+            puts "   " *(0 + level) +"</#{self.nome}>"
+        end 
     end
 
 end
@@ -38,32 +54,32 @@ class Attr < AST #talvez altere
 end
 
 class If < AST
-    def initialize()
+    def initialize
         super("If")
     end
 end
 
 class While < AST
-    def initialize(exp)
+    def initialize
         super('While')
     end
 end
 
+class For < AST
+    def initialize
+        super('For')
+    end
+end
+
 class Read < AST
-    attr_accessor :id,:nome
     def initialize(id)
         super('Read')
-        self.children.push(id)
-        self.id = id
     end
 end
 
 class Print < AST
-    attr_accessor :exp
-    def initialize(exp)
+    def initialize
         super("Print")
-        self.children.push(exp)
-        self.exp = exp
     end
 end
 
@@ -85,49 +101,52 @@ class LogicalOp < Expr
 end
 
 class ArithOp < Expr
-    def initialize(op,left,right)
+    attr_accessor :left, :op, :right
+    def initialize(left,op,right)
         super('ArithOp',op,left,right)
     end
 end
 
 class RelOp < Expr
-    attr_accessor :op,:left,:right
+    attr_accessor :left,:op,:right
     def initialize(left,op,right)
         super('RelOp',op,left,right)
     end
 end
 
 class Id < AST ##precisa rever
-    attr_reader :token, :value
-    attr_accessor :token
-    def initialize(token)
+    attr_reader :lexema
+    attr_accessor :lexema
+    def initialize(lexema)
         super('Id')
-        self.token = token
-        #self.value = token.value ##pegar tal token da tabela de simbolos(mudar)
+        self.lexema = lexema[0]
+        if lexema[2] == 'INT'
+            self.tipo = "Integer"
+        else
+            self.tipo = "Float"
+        end
     end
 end
 
 class Num < AST #precisa rever também
-    attr_accessor :token, :tipo
+    attr_accessor :lexema, :tipo
 
-    def initialize(token,tipo)
+    def initialize(lexema,tipo)
         super('Num')
-        self.token = token
+        self.lexema = lexema
         if tipo == 0
-           # self.value = token.lexema.to_i
+          self.value = self.lexema[0].to_i
+          self.tipo = 'Integer'
         else
-            #self.value = token.lexema.to_f
+           self.value = self.lexema[0].to_f
+          self.tipo = 'Float'
         end
-        self.tipo = tipo
     end       
 end
 
 class DelimitadorBloco < AST
-    attr_reader :nome
     def initialize
-        puts "Criando delimitador de Bloco"
-        @nome = "Block"
-       # @children = []
+        super("Bloco")
     end
 end
 #node = If.new("exp","ctrue",If.new("exp2","ctrue2","cfalse2"))

@@ -21,12 +21,12 @@ module AnalisadorSintatico
     @float_type = 1
   end
   def saida
-    #puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
+   # puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
   end
 
   def analise_sintatica()
     construtor
-    programa()  
+    programa() 
   end
 
   def programa()
@@ -36,14 +36,14 @@ module AnalisadorSintatico
       casa("LBRACKET")
       casa("RBRACKET")
       casa("LBRACE")
-      node = AST.new('Main')
+      node = AST.new('AST')
       ast = decl_comando(node)
-      node.seeChild(node.level)
       casa("RBRACE")
-      return ast # dentro ou fora?
+      node.seeChild(node.level)
     else
       retorna_erro
     end
+    return ast # dentro ou fora?
   end
 
   def decl_comando(node)
@@ -66,20 +66,20 @@ module AnalisadorSintatico
       hash_simbolos()
       id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
       casa("ID") 
-      return decl2(node)
+      return decl2(node,id_node)#precisa conhecer no_id pra printar qd for decl+attr
     else
       retorna_erro('declaracao')
     end
     return node #retorna nó?
   end
 
-  def decl2(node)
+  def decl2(node,id_node)
     if @matriz[@index][1].to_s == "COMMA"
       casa("COMMA")
       hash_simbolos()
       id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
       casa("ID")
-      return decl2(node)
+      return decl2(node,id_node)
     elsif @matriz[@index][1].to_s == "PCOMMA"
       casa("PCOMMA")
       return node
@@ -88,7 +88,7 @@ module AnalisadorSintatico
       expr_node = expressao()
       attr_node = Attr.new(id_node,"=",expr_node)
       node.children.push(attr_node)
-      return decl2(node)
+      return decl2(node,id_node)#precisa conhecer no_id pra printar qd for decl+attr
     else
       retorna_erro('decl2')
     end
@@ -143,11 +143,11 @@ module AnalisadorSintatico
   def atribuicao(node)
     if @matriz[@index][1].to_s == "ID"
       hash_simbolos()
-      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
+      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])
       casa("ID")
       casa("ATTR")
-      expro_node = expressao()
-      node.children.push(Attr.new(id_node,"=",expro_node))
+      expr_node = expressao()
+      node.children.push(Attr.new(id_node,"=",expr_node))
       casa("PCOMMA")
       return node
     else
@@ -158,8 +158,7 @@ module AnalisadorSintatico
 
   def comando_se(node)
     if @matriz[@index][1].to_s == "IF"
-      if_node = AST.new("If")
-      #if_node = If.new("exp","ctrue","cfalse")
+      if_node = If.new
       casa("IF") 
       casa("LBRACKET")
       expr_node = expressao()
@@ -191,8 +190,7 @@ module AnalisadorSintatico
 
   def comando_enquanto(node)
     if @matriz[@index][1].to_s == "WHILE"
-      while_node = While.new("While")
-      #while_node = AST.new("While")
+      while_node = While.new
       casa("WHILE")
       casa("LBRACKET")
       expr_node = expressao()
@@ -227,7 +225,7 @@ module AnalisadorSintatico
 
   def comando_print(node)
     if @matriz[@index][1].to_s == "PRINT"
-      print_node = Print.new("Print")
+      print_node = Print.new
       casa("PRINT")
       casa("LBRACKET")
       expr_node =  expressao()
@@ -235,6 +233,7 @@ module AnalisadorSintatico
       casa("RBRACKET")
       casa("PCOMMA")
       node.children.push(print_node)
+      return node #dentro ou fora??
     else
       retorna_erro('comando_print')
     end
@@ -242,29 +241,37 @@ module AnalisadorSintatico
   end
 
   #pensar sobre
-  def comando_for()
+  def comando_for(node)
     if @matriz[@index][1].to_s == "FOR"
+      for_node = For.new
       casa("FOR")
       casa("LBRACKET")
-      atribuicao_for()
+      atribuicao_for(for_node)
       casa("PCOMMA")
-      expressao()
+      expr_node = expressao()
+      for_node.children.push(expr_node) 
       casa("PCOMMA")
+      atribuicao_for(for_node)
+      casa("RBRACKET")
+      node1 = comando(for_node)
+      node.children.push(node1)
     else
       retorna_erro('comando_for')
     end
+      return node
   end
 
-  def atribuicao_for()
-    if @matriz[@index][1].to_s == "RBRACKET"
-      casa("RBRACKET")
-      comando()
-    elsif @matriz[@index][1].to_s == "ID"
+  def atribuicao_for(for_node)
+    if @matriz[@index][1].to_s == "ID"
       hash_simbolos()
+      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])
       casa("ID")
       casa("ATTR")
-      expressao()
+      expr_node = expressao()
+      attr_node = Attr.new(id_node,"=",expr_node)
+      for_node.children.push(attr_node)
     end
+    return for_node
   end
 
   def expressao()
@@ -288,7 +295,7 @@ module AnalisadorSintatico
       menorigual_node = RelOp.new(expr,"<=",expr2)
       return relacao_opc(menorigual_node)
     elsif @matriz[@index][1].to_s == "GT"
-       op_rel()
+      op_rel()
       expr2 = adicao()
       maior_node = RelOp.new(expr,">",expr2)
       return relacao_opc(maior_node)
@@ -329,12 +336,12 @@ module AnalisadorSintatico
     if @matriz[@index][1].to_s == "PLUS" 
       op_adicao()
       expr2 = termo()
-      plus_node = ArithOp(expr,"+",expr2)
+      plus_node = ArithOp.new(expr,"+",expr2)
       return adicao_opc(plus_node)
     elsif  @matriz[@index][1].to_s == "MINUS"
       op_adicao()
       expr2 = termo()
-      minus_node = ArithOp(expr,"-",expr2)
+      minus_node = ArithOp.new(expr,"-",expr2)
       return adicao_opc(minus_node)
     else
       return expr
@@ -365,12 +372,12 @@ module AnalisadorSintatico
       op_mult()
       expr2 = fator()
       mult_node = ArithOp.new(expr,"*",expr2)
-      return termo_opc(expr2)
+      return termo_opc(mult_node)
     elsif @matriz[@index][1].to_s == "DIV"
       op_mult()
       expr2 = fator()
       div_node = ArithOp.new(expr,"/",expr2)
-      return termo_opc(expr2)
+      return termo_opc(div_node)
     else
       return expr
     end
@@ -393,11 +400,11 @@ module AnalisadorSintatico
       casa("ID")
       return id_node
     elsif @matriz[@index][1].to_s == "INTEGER_CONST"
-      num_node = Num.new(@tabela_simbolos[@matriz[@index][0]],@int_type)
+      num_node = Num.new(@matriz[@index][0],@int_type)
       casa("INTEGER_CONST")
       return num_node
     elsif @matriz[@index][1].to_s == "FLOAT_CONST"
-      num_node = Num.new(@tabela_simbolos[@matriz[@index][0]],@float_type)
+      num_node = Num.new(@matriz[@index][0],@float_type)
       casa("FLOAT_CONST")
       return num_node
     elsif @matriz[@index][1].to_s == "LBRACKET"

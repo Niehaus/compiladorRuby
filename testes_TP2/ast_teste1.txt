@@ -1,0 +1,52 @@
+<AST>
+    <Attr>
+        <Id lexema='e' type='integer' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='x' type='float' />
+        <ArithOp op='/'> 
+            <Num value=2 type='integer' />
+            <ArithOp op='*'> 
+                <Num value=3 type='integer' />
+                <Num value=5 type='integer' />
+            </ArithOp>
+        </ArithOp>
+    </Attr>
+    <Attr>
+        <Id lexema='a' type='float' />
+        <ArithOp op='/'> 
+            <ArithOp op='-'> 
+                <Num value=67 type='integer' />
+                <Num value=233 type='integer' />
+            </ArithOp>
+            <Id lexema='e' type='integer' />
+        </ArithOp>
+    </Attr>
+    <Attr>
+        <Id lexema='c' type='float' />
+        <ArithOp op='+'> 
+            <Num value=2.456 type='float' />
+            <ArithOp op='*'> 
+                <Num value=343.5 type='float' />
+                <Num value=13.15 type='float' />
+            </ArithOp>
+        </ArithOp>
+    </Attr>
+    <If>
+        <RelOp op='=='> 
+            <Id lexema='a' type='float' />
+            <Id lexema='c' type='float' />
+        </RelOp>
+        <Bloco>
+            <Attr>
+                <Id lexema='t' type='integer' />
+                <Num value=7 type='integer' />
+            </Attr>
+        </Bloco>
+        <Attr>
+            <Id lexema='t' type='integer' />
+            <Num value=1 type='integer' />
+        </Attr>
+    </If>
+</AST>

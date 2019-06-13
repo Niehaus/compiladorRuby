@@ -1,6 +1,6 @@
 int main()
 {
-  int x = 1, y = 1 || 2 + 3*4 && 1;
+  int x = 1, y = 1, h = 2 + 3*4 + 1;
   float z = x + y;
   print(x);
   print(y);
@@ -8,7 +8,7 @@ int main()
   while (x < y + z * 9 - 3)
   {
     int b = 1, c=2, d = 5;
-    if (d == c && b + c)
+    if (d < c > b + c)
         b = 1;
     else if (b <= c)
     {

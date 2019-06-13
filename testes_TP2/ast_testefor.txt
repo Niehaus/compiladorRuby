@@ -1,0 +1,45 @@
+<AST>
+    <Attr>
+        <Id lexema='i' type='integer' />
+        <Num value=0 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='k' type='integer' />
+        <Num value=2 type='integer' />
+    </Attr>
+    <For>
+        <Attr>
+            <Id lexema='j' type='integer' />
+            <Num value=0 type='integer' />
+        </Attr>
+        <RelOp op='<'> 
+            <Id lexema='j' type='integer' />
+            <Num value=10 type='integer' />
+        </RelOp>
+        <Attr>
+            <Id lexema='j' type='integer' />
+            <ArithOp op='+'> 
+                <Id lexema='j' type='integer' />
+                <Num value=1 type='integer' />
+            </ArithOp>
+        </Attr>
+        <Bloco>
+            <Read>
+                <Id lexema='i' type='integer' />
+            </Read>
+            <If>
+                <RelOp op='>'> 
+                    <Id lexema='i' type='integer' />
+                    <Num value=5 type='integer' />
+                </RelOp>
+                <Attr>
+                    <Id lexema='i' type='integer' />
+                    <Num value=43 type='integer' />
+                </Attr>
+            </If>
+            <Print>
+                <Id lexema='i' type='integer' />
+            </Print>
+        </Bloco>
+    </For>
+</AST>

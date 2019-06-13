@@ -1,0 +1,24 @@
+<AST>
+    <Attr>
+        <Id lexema='e' type='integer' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='x' type='float' />
+        <ArithOp op='+'> 
+            <Num value=2 type='integer' />
+            <ArithOp op='*'> 
+                <Num value=5 type='integer' />
+                <Num value=4 type='integer' />
+            </ArithOp>
+        </ArithOp>
+    </Attr>
+    <Attr>
+        <Id lexema='a' type='float' />
+        <Id lexema='e' type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='c' type='float' />
+        <Num value=13.15 type='float' />
+    </Attr>
+</AST>

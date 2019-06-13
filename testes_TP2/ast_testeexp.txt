@@ -1,0 +1,48 @@
+<AST>
+    <Attr>
+        <Id lexema='z' type='float' />
+        <ArithOp op='+'> 
+            <ArithOp op='+'> 
+                <ArithOp op='-'> 
+                    <ArithOp op='+'> 
+                        <ArithOp op='-'> 
+                            <ArithOp op='+'> 
+                                <ArithOp op='*'> 
+                                    <Id lexema='x' type='integer' />
+                                    <Id lexema='y' type='integer' />
+                                </ArithOp>
+                                <ArithOp op='/'> 
+                                    <ArithOp op='*'> 
+                                        <Id lexema='x' type='integer' />
+                                        <ArithOp op='+'> 
+                                            <Id lexema='x' type='integer' />
+                                            <Id lexema='y' type='integer' />
+                                        </ArithOp>
+                                    </ArithOp>
+                                    <ArithOp op='*'> 
+                                        <Id lexema='x' type='integer' />
+                                        <Id lexema='y' type='integer' />
+                                    </ArithOp>
+                                </ArithOp>
+                            </ArithOp>
+                            <ArithOp op='/'> 
+                                <ArithOp op='+'> 
+                                    <Id lexema='x' type='integer' />
+                                    <Id lexema='y' type='integer' />
+                                </ArithOp>
+                                <Id lexema='x' type='integer' />
+                            </ArithOp>
+                        </ArithOp>
+                        <Id lexema='y' type='integer' />
+                    </ArithOp>
+                    <Id lexema='y' type='integer' />
+                </ArithOp>
+                <ArithOp op='*'> 
+                    <Id lexema='x' type='integer' />
+                    <Id lexema='x' type='integer' />
+                </ArithOp>
+            </ArithOp>
+            <Id lexema='y' type='integer' />
+        </ArithOp>
+    </Attr>
+</AST>

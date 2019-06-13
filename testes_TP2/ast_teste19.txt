@@ -1,0 +1,12 @@
+<AST>
+    <Attr>
+        <Id lexema='a' type='integer' />
+        <ArithOp op='*'> 
+            <Id lexema='a' type='integer' />
+            <ArithOp op='+'> 
+                <Id lexema='a' type='integer' />
+                <Num value=1 type='integer' />
+            </ArithOp>
+        </ArithOp>
+    </Attr>
+</AST>

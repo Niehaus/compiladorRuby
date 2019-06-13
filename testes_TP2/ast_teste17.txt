@@ -1,0 +1,27 @@
+<AST>
+    <Attr>
+        <Id lexema='x' type='integer' />
+        <Num value=2 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='y' type='integer' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <If>
+        <ArithOp op='+'> 
+            <ArithOp op='+'> 
+                <Id lexema='x' type='integer' />
+                <Id lexema='y' type='integer' />
+            </ArithOp>
+            <Id lexema='x' type='integer' />
+        </ArithOp>
+        <Attr>
+            <Id lexema='z' type='integer' />
+            <Num value=1 type='integer' />
+        </Attr>
+        <Attr>
+            <Id lexema='z' type='integer' />
+            <Num value=0 type='integer' />
+        </Attr>
+    </If>
+</AST>

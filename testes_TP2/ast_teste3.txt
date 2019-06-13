@@ -1,0 +1,61 @@
+<AST>
+    <Attr>
+        <Id lexema='b' type='integer' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='d' type='integer' />
+        <Num value=5 type='integer' />
+    </Attr>
+    <If>
+        <LogicalOp op='&&'> 
+            <RelOp op='=='> 
+                <Id lexema='d' type='integer' />
+                <Id lexema='c' type='integer' />
+            </RelOp>
+            <ArithOp op='+'> 
+                <Id lexema='b' type='integer' />
+                <Id lexema='c' type='integer' />
+            </ArithOp>
+        </LogicalOp>
+        <Attr>
+            <Id/>
+            <Id/>
+        </Attr>
+        <If>
+            <RelOp op='<='> 
+                <Id lexema='b' type='integer' />
+                <Id lexema='c' type='integer' />
+            </RelOp>
+            <Bloco>
+                <Print>
+                    <ArithOp op='+'> 
+                        <Id lexema='d' type='integer' />
+                        <Id lexema='e' type='integer' />
+                    </ArithOp>
+                </Print>
+                <If>
+                    <RelOp op='>'> 
+                        <Id/>
+                        <Num value=4 type='integer' />
+                    </RelOp>
+                    <Attr>
+                        <Id/>
+                        <Num value=0 type='integer' />
+                    </Attr>
+                </If>
+            </Bloco>
+            <Bloco>
+                <While>
+                    <RelOp op='>'> 
+                        <Id lexema='j' type='integer' />
+                        <Num value=3 type='integer' />
+                    </RelOp>
+                    <Print>
+                        <Num value=1 type='integer' />
+                    </Print>
+                </While>
+            </Bloco>
+        </If>
+    </If>
+</AST>
