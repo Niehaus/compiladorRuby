@@ -1,2 +1,3 @@
-# compiladorRuby
-Simple Compilador para CSmall - Ruby
+# Compilador C-Small em Ruby
+##AST 
+## Geração de Código Python
