@@ -1,4 +1,8 @@
 # Compilador C-Small em Ruby
+Os resultados estão na pasta Resultados, e contem os arquivos
+- [x] ASA.xml
+- [x] codPython.py
+- [x] AnaliseSintatica.txt
 
 ## Exemplo Código em C - Entrada
 ```C
