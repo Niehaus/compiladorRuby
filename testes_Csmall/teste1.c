@@ -1,15 +1,13 @@
-int main() {
-   
-   int a = 10;
-   int b = 5;
-   int i;
- 
-
-while (10 > (10 + 1))
+int main()
 {
-   a = 10;
-}
 
- 
-   
-}   
+   int a = 10, b = 5;
+   int i;
+
+   for (i = 0; i < 10; i = i + 1) {
+      if (a < 10) {
+         a = b + 1;
+      }
+     a = 30;
+   }
+}

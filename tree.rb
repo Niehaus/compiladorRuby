@@ -56,7 +56,7 @@ class Attr < AST #talvez altere
         self.dir = dir
     end
     def geraPython(level)
-         return self.children[0].geraPython(level) + " " + self.op + " " +self.children[1].geraPython(level)
+         return " " *(0 + level)+ self.children[0].geraPython(level) + " " + self.op + " " +self.children[1].geraPython(level)
     end
 end
 
@@ -66,12 +66,12 @@ class If < AST
     end
     def geraPython(level) #achar expressão, achar caminho true, verificar se existe c_false e aí return em tdo
         if self.children[2].class == NilClass
-            return "if "  + self.children[0].geraPython(level) + ":"+ "\n" + self.children[1].geraPython(level)
+            return  " " *(0 + level) +"if "  + self.children[0].geraPython(level) + ":"+ "\n" + self.children[1].geraPython(level) + "\n"
         else
             if self.children[2].children[0].nome == "If"
-                return "if "  + self.children[0].geraPython(level) + ":"+ "\n" + self.children[1].geraPython(level) + "\n" + "  el" + self.children[2].children[0].geraPython(level)
+                return  " " *(0 + level) +"if "  + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level) + "\n" + " " *(0 + level) + "el" + self.children[2].children[0].geraPython(level)
             else
-                return "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level) + "\n" + "  else:\n" + self.children[2].geraPython(level)  
+                return  " " *(0 + level) +"if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level) + "\n" +  " "*(0 + level) + "else:\n" + self.children[2].geraPython(level)  
             end
         end  
     end
@@ -93,7 +93,7 @@ class For < AST
     end
 
      def geraPython(level)
-        return self.children[0].geraPython(level) + "\nwhile " + self.children[1].geraPython(level) + ":\n" + self.children[3].geraPython(level) + "\n"+ "  #{self.children[2].geraPython(level)}"
+        return self.children[0].geraPython(level) + "\nwhile " + self.children[1].geraPython(level) + ":\n" + self.children[3].geraPython(level) + "\n"+ " #{self.children[2].geraPython(level)}"
     end
 end
 
@@ -192,7 +192,7 @@ class DelimitadorBloco < AST
     def geraPython(level)
         code = "";
         self.children.each do |child|
-            code << " " *(2 + level)
+            code << " " *(0 + level)
             code << child.geraPython(level + 1).to_s
         end  
         return code
