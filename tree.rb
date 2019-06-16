@@ -1,4 +1,7 @@
+require 'fileutils'
 #estrutura da arvore
+
+    
  class AST   
     attr_accessor :nome, :children, :tipo, :value,:root_node,:level   
 
@@ -11,22 +14,23 @@
     end
 
     def seeChild(level)
+        
         if self.nome == 'RelOp' or self.nome == "ArithOp"
-            puts "   " *(0 + level) +"<#{self.nome} op='#{self.op}'>"
+            $asa.write("   " *(0 + level) +"<#{self.nome} op='#{self.op}'>\n")
         elsif self.nome == "c_true" or self.nome  == "c_false"
             #não printa nda pra isso n aparecer
         elsif self.nome  == "Num"
-            puts "   " *(0 + level) +"<#{self.nome} value= #{self.value} type='#{self.tipo}'/>"
+           $asa.write("   " *(0 + level) +"<#{self.nome} value= #{self.value} type='#{self.tipo}'/>\n")
         elsif self.nome == "Id"
-            puts "   " *(0 + level) +"<#{self.nome} lexema='#{self.lexema}' type='#{self.tipo}'/>"
+            $asa.write("   " *(0 + level) +"<#{self.nome} lexema='#{self.lexema}' type='#{self.tipo}'/>\n")
         else
-            puts "   " *(0 + level) +"<#{self.nome}>"
+            $asa.write("   " *(0 + level) +"<#{self.nome}>\n")
         end
         self.children.each do |child|
             if child.class != String && child.class != NilClass
                 child.seeChild(level + 1)
             else 
-                puts "      " *(0 + level) + "#{child}"
+                $asa.write("      " *(0 + level) + "#{child}")
             end
         end
         if self.nome == "c_true" or self.nome  == "c_false"
@@ -34,13 +38,13 @@
         elsif self.nome == "Id" or self.nome  == "Num"
            #não printa nada pra isso n aparecer 
         else
-            puts "   " *(0 + level) +"</#{self.nome}>"
+            $asa.write("   " *(0 + level) +"</#{self.nome}>\n")
         end 
     end   
 
     def geraPython(level)
         self.children.each do |child|
-            puts child.geraPython(level).to_s 
+            $codPython.write(child.geraPython(level).to_s + "\n")
         end
     end
 end

@@ -8,11 +8,13 @@ module AnalisadorSintatico
   def construtor
     Teste::le_arquivo
     @token_entrada, @matriz = Teste::automato
-   # puts '------------Token Buffer------------'
+   
    # puts 'Token          | Num. da Linha | Lexema'
-    puts "-" * 15
-    puts "| Arvore - ASA |"
-    puts "-" * 15
+    Dir.chdir("Resultados") 
+    $asa = File.new("ASA.xml","w")
+    $codPython = File.new("codPython.py","w")
+    $anaSintax = File.new("AnaliseSintatica.txt","w")
+    $anaSintax.write("------------Token Buffer----------------\nToken           | Num. da Linha | Lexema\n")
     @index = 0
     @tabela_simbolos = {}
     @tipo_variavel
@@ -21,7 +23,7 @@ module AnalisadorSintatico
     @float_type = 1
   end
   def saida
-   #puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}"
+   $anaSintax.write("#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}\n")
   end
 
   def analise_sintatica()
@@ -39,11 +41,9 @@ module AnalisadorSintatico
       node = AST.new("AST")
       ast = decl_comando(node)
       casa("RBRACE")
-      node.seeChild(node.level)
-      puts "-" * 15
-      puts "| Gera Código |"
-      puts "-" * 15
-      node.geraPython(node.level)
+      node.seeChild(node.level) #gera ASA
+      node.geraPython(node.level) #gera CodigoPython
+      puts "Arquivos gerados: \n\tASA.xml \n\tcodPython.py\n\tAnaliseSintatica.txt \nPasta: Resultados"
     else
       retorna_erro
     end
