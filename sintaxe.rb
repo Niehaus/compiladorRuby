@@ -36,10 +36,14 @@ module AnalisadorSintatico
       casa("LBRACKET")
       casa("RBRACKET")
       casa("LBRACE")
-      node = AST.new('AST')
+      node = AST.new("AST")
       ast = decl_comando(node)
       casa("RBRACE")
       node.seeChild(node.level)
+      puts "-" * 15
+      puts "| Gera Código |"
+      puts "-" * 15
+      node.geraPython(node.level)
     else
       retorna_erro
     end
@@ -130,7 +134,7 @@ module AnalisadorSintatico
   def bloco(node)
     if @matriz[@index][1].to_s == "LBRACE"
       casa("LBRACE")
-      block = AST.new("Bloco")
+      block = DelimitadorBloco.new("Bloco")
       retorno = decl_comando(block)
       casa("RBRACE")
       node.children.push(retorno)
@@ -164,7 +168,7 @@ module AnalisadorSintatico
       expr_node = expressao()
       if_node.children.push(expr_node)
       casa("RBRACKET")
-      c_true = AST.new("c_true")
+      c_true = DelimitadorBloco.new('c_true')
       retorno = comando(c_true)
       if_node.children.push(retorno)
       comando_senao(if_node)  
@@ -178,7 +182,7 @@ module AnalisadorSintatico
 
   def comando_senao(if_node)
     if @matriz[@index][1].to_s == "ELSE"
-      c_false = AST.new("c_false")
+      c_false = DelimitadorBloco.new("c_false")
       casa("ELSE")
       retorno = comando(c_false)
       if_node.children.push(retorno)
@@ -196,7 +200,7 @@ module AnalisadorSintatico
       expr_node = expressao()
       while_node.children.push(expr_node)
       casa("RBRACKET")
-      c_true = AST.new("c_true")
+      c_true = DelimitadorBloco.new("c_true")
       retorno = comando(c_true)
       while_node.children.push(retorno)
       node.children.push(while_node)
