@@ -242,7 +242,6 @@ module AnalisadorSintatico
     end
   end
 
-  #pensar sobre
   def comando_for(node)
     if @matriz[@index][1].to_s == "FOR"
       for_node = For.new

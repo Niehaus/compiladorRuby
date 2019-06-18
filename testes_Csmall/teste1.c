@@ -4,9 +4,14 @@ int main()
    int i;
 
    for (i = 0; i < 10; i = i + 1) {
-      if (a < 10) {
-         a = b + 1;
+      if (a > b)
+      {
+         a = c;   
+      }else
+      {
+         a = b;
       }
-     a = 30;
+      
+      
    }
 }
