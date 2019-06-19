@@ -1,159 +1,50 @@
 <AST>
    <Attr>
-      <Id lexema='q' type='Integer'/>
-      <Num value= 123 type='Integer'/>
-   </Attr>
-   <Attr>
-      <Id lexema='b' type='Integer'/>
-      <Num value= 29 type='Integer'/>
-   </Attr>
-   <Attr>
-      <Id lexema='d' type='Integer'/>
-      <Num value= 21 type='Integer'/>
-   </Attr>
-   <For>
-      <Attr>
-         <Id lexema='b' type='Integer'/>
-         <Num value= 0 type='Integer'/>
-      </Attr>
-      <RelOp op='<'>
-         <Id lexema='b' type='Integer'/>
-         <Num value= 10 type='Integer'/>
-      </RelOp>
-      <Attr>
-         <Id lexema='b' type='Integer'/>
-         <ArithOp op='+'>
-            <Id lexema='b' type='Integer'/>
-            <Num value= 1 type='Integer'/>
+      <Id lexema='x' type='Float'/>
+      <ArithOp op='/'>
+         <Num value= 2 type='Integer'/>
+         <ArithOp op='*'>
+            <Num value= 3 type='Integer'/>
+            <Num value= 5 type='Integer'/>
          </ArithOp>
-      </Attr>
-      <Bloco>
-         <If>
-            <RelOp op='<'>
-               <Id lexema='a' type='Integer'/>
-               <Id lexema='b' type='Integer'/>
-            </RelOp>
-               <Bloco>
-                  <Attr>
-                     <Id lexema='b' type='Integer'/>
-                     <Num value= 50 type='Integer'/>
-                  </Attr>
-                  <Attr>
-                     <Id lexema='a' type='Integer'/>
-                     <Num value= 10 type='Integer'/>
-                  </Attr>
-                  <Attr>
-                     <Id lexema='b' type='Integer'/>
-                     <ArithOp op='+'>
-                        <Id lexema='a' type='Integer'/>
-                        <Num value= 2 type='Integer'/>
-                     </ArithOp>
-                  </Attr>
-               </Bloco>
-               <If>
-                  <RelOp op='>'>
-                     <Id lexema='a' type='Integer'/>
-                     <Id lexema='b' type='Integer'/>
-                  </RelOp>
-                     <Bloco>
-                        <Attr>
-                           <Id lexema='a' type='Integer'/>
-                           <Num value= 10 type='Integer'/>
-                        </Attr>
-                        <Attr>
-                           <Id lexema='a' type='Integer'/>
-                           <Num value= 10 type='Integer'/>
-                        </Attr>
-                        <Attr>
-                           <Id lexema='b' type='Integer'/>
-                           <ArithOp op='+'>
-                              <Id lexema='a' type='Integer'/>
-                              <Num value= 2 type='Integer'/>
-                           </ArithOp>
-                        </Attr>
-                     </Bloco>
-                     <Bloco>
-                        <Attr>
-                           <Id lexema='a' type='Integer'/>
-                           <Num value= 60 type='Integer'/>
-                        </Attr>
-                        <Attr>
-                           <Id lexema='a' type='Integer'/>
-                           <Num value= 10 type='Integer'/>
-                        </Attr>
-                        <Attr>
-                           <Id lexema='b' type='Integer'/>
-                           <ArithOp op='+'>
-                              <Id lexema='a' type='Integer'/>
-                              <Num value= 2 type='Integer'/>
-                           </ArithOp>
-                        </Attr>
-                     </Bloco>
-               </If>
-         </If>
-      </Bloco>
-   </For>
+      </ArithOp>
+   </Attr>
+   <Attr>
+      <Id lexema='a' type='Integer'/>
+      <ArithOp op='/'>
+         <ArithOp op='-'>
+            <Num value= 67 type='Integer'/>
+            <Num value= 233 type='Integer'/>
+         </ArithOp>
+         <Id lexema='e' type='Integer'/>
+      </ArithOp>
+   </Attr>
+   <Attr>
+      <Id lexema='c' type='Integer'/>
+      <ArithOp op='+'>
+         <Num value= 2.456 type='Float'/>
+         <ArithOp op='*'>
+            <Num value= 343.5 type='Float'/>
+            <Num value= 13.15 type='Float'/>
+         </ArithOp>
+      </ArithOp>
+   </Attr>
    <If>
-      <RelOp op='<'>
+      <RelOp op='>'>
          <Id lexema='a' type='Integer'/>
-         <Id lexema='b' type='Integer'/>
+         <Id lexema='c' type='Integer'/>
       </RelOp>
          <Bloco>
             <Attr>
-               <Id lexema='b' type='Integer'/>
-               <Num value= 50 type='Integer'/>
-            </Attr>
-            <Attr>
-               <Id lexema='a' type='Integer'/>
-               <Num value= 10 type='Integer'/>
-            </Attr>
-            <Attr>
-               <Id lexema='b' type='Integer'/>
-               <ArithOp op='+'>
-                  <Id lexema='a' type='Integer'/>
-                  <Num value= 2 type='Integer'/>
-               </ArithOp>
+               <Id lexema='c' type='Integer'/>
+               <Num value= 7 type='Integer'/>
             </Attr>
          </Bloco>
-         <If>
-            <RelOp op='>'>
-               <Id lexema='a' type='Integer'/>
+         <Bloco>
+            <Attr>
                <Id lexema='b' type='Integer'/>
-            </RelOp>
-               <Bloco>
-                  <Attr>
-                     <Id lexema='a' type='Integer'/>
-                     <Num value= 10 type='Integer'/>
-                  </Attr>
-                  <Attr>
-                     <Id lexema='a' type='Integer'/>
-                     <Num value= 10 type='Integer'/>
-                  </Attr>
-                  <Attr>
-                     <Id lexema='b' type='Integer'/>
-                     <ArithOp op='+'>
-                        <Id lexema='a' type='Integer'/>
-                        <Num value= 2 type='Integer'/>
-                     </ArithOp>
-                  </Attr>
-               </Bloco>
-               <Bloco>
-                  <Attr>
-                     <Id lexema='a' type='Integer'/>
-                     <Num value= 60 type='Integer'/>
-                  </Attr>
-                  <Attr>
-                     <Id lexema='a' type='Integer'/>
-                     <Num value= 10 type='Integer'/>
-                  </Attr>
-                  <Attr>
-                     <Id lexema='b' type='Integer'/>
-                     <ArithOp op='+'>
-                        <Id lexema='a' type='Integer'/>
-                        <Num value= 2 type='Integer'/>
-                     </ArithOp>
-                  </Attr>
-               </Bloco>
-         </If>
+               <Num value= 1 type='Integer'/>
+            </Attr>
+         </Bloco>
    </If>
 </AST>

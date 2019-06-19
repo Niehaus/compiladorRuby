@@ -1,30 +1,7 @@
-q = 123
-b = 29
-d = 21
-b = 0
-while b < 10:
-  if a < b:
-      b = 50
-      a = 10
-      b = a + 2
-  el  if a > b:
-      a = 10
-      a = 10
-      b = a + 2
-  else:
-      a = 60
-      a = 10
-      b = a + 2
-  b = b + 1
-if a < b:
-    b = 50
-    a = 10
-    b = a + 2
-elif a > b:
-    a = 10
-    a = 10
-    b = a + 2
+x = 2 / 3 * 5
+a = 67 - 233 / e
+c = 2.456 + 343.5 * 13.15
+if a > c:
+    c = 7
 else:
-    a = 60
-    a = 10
-    b = a + 2
+    b = 1

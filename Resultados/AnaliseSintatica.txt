@@ -6,164 +6,63 @@ LBRACKET               0         (
 RBRACKET               0         )
 LBRACE                 0         {
 INT                    1         int
-ID                     1         q
-ATTR                   1         =
-INTEGER_CONST          linha     ["1", "2", "3"]
+ID                     1         a
+COMMA                  1         ,
+ID                     1         b
+COMMA                  1         ,
+ID                     1         c
+COMMA                  1         ,
+ID                     1         d
+COMMA                  1         ,
+ID                     1         e
 PCOMMA                 1         ;
-INT                    2         int
-ID                     2         b
+FLOAT                  2         float
+ID                     2         x
 ATTR                   2         =
-INTEGER_CONST          linha     ["2", "9"]
+INTEGER_CONST          linha     ["2"]
+DIV                    2         /
+LBRACKET               2         (
+INTEGER_CONST          linha     ["3"]
+MULT                   2         *
+INTEGER_CONST          linha     ["5"]
+RBRACKET               2         )
 PCOMMA                 2         ;
-INT                    3         int
-ID                     3         d
-ATTR                   3         =
-INTEGER_CONST          linha     ["2", "1"]
-COMMA                  3         ,
-ID                     3         c
-COMMA                  3         ,
 ID                     3         a
+ATTR                   3         =
+LBRACKET               3         (
+INTEGER_CONST          linha     ["6", "7"]
+MINUS                  3         -
+INTEGER_CONST          linha     ["2", "3", "3"]
+RBRACKET               3         )
+DIV                    3         /
+ID                     3         e
 PCOMMA                 3         ;
-FOR                    5         for
+FLOAT                  4         float
+ID                     4         c
+ATTR                   4         =
+FLOAT_CONST            linha     ["2", ".", "4", "5", "6"]
+PLUS                   4         +
+FLOAT_CONST            linha     ["3", "4", "3", ".", "5"]
+MULT                   4         *
+FLOAT_CONST            linha     ["1", "3", ".", "1", "5"]
+PCOMMA                 4         ;
+IF                     5         if
 LBRACKET               5         (
-ID                     5         b
-ATTR                   5         =
-INTEGER_CONST          linha     ["0"]
-PCOMMA                 5         ;
-ID                     5         b
-LT                     5         <
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 5         ;
-ID                     5         b
-ATTR                   5         =
-ID                     5         b
-PLUS                   5         +
-INTEGER_CONST          linha     ["1"]
+ID                     5         a
+GT                     5         >
+ID                     5         c
 RBRACKET               5         )
-LBRACE                 5         {
-IF                     7         if
-LBRACKET               7         (
-ID                     7         a
-LT                     7         <
-ID                     7         b
-RBRACKET               7         )
-LBRACE                 8         {
-ID                     9         b
-ATTR                   9         =
-INTEGER_CONST          linha     ["5", "0"]
-PCOMMA                 9         ;
-ID                     10        a
-ATTR                   10        =
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 10        ;
+LBRACE                 6         {
+ID                     7         c
+ATTR                   7         =
+INTEGER_CONST          linha     ["7"]
+PCOMMA                 7         ;
+RBRACE                 8         }
+ELSE                   9         else
+LBRACE                 10        {
 ID                     11        b
 ATTR                   11        =
-ID                     11        a
-PLUS                   11        +
-INTEGER_CONST          linha     ["2"]
+INTEGER_CONST          linha     ["1"]
 PCOMMA                 11        ;
 RBRACE                 12        }
-ELSE                   12        else
-IF                     12        if
-LBRACKET               12        (
-ID                     12        a
-GT                     12        >
-ID                     12        b
-RBRACKET               12        )
-LBRACE                 12        {
-ID                     13        a
-ATTR                   13        =
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 13        ;
-ID                     14        a
-ATTR                   14        =
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 14        ;
-ID                     15        b
-ATTR                   15        =
-ID                     15        a
-PLUS                   15        +
-INTEGER_CONST          linha     ["2"]
-PCOMMA                 15        ;
-RBRACE                 16        }
-ELSE                   16        else
-LBRACE                 17        {
-ID                     18        a
-ATTR                   18        =
-INTEGER_CONST          linha     ["6", "0"]
-PCOMMA                 18        ;
-ID                     19        a
-ATTR                   19        =
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 19        ;
-ID                     20        b
-ATTR                   20        =
-ID                     20        a
-PLUS                   20        +
-INTEGER_CONST          linha     ["2"]
-PCOMMA                 20        ;
-RBRACE                 21        }
-RBRACE                 24        }
-IF                     26        if
-LBRACKET               26        (
-ID                     26        a
-LT                     26        <
-ID                     26        b
-RBRACKET               26        )
-LBRACE                 27        {
-ID                     28        b
-ATTR                   28        =
-INTEGER_CONST          linha     ["5", "0"]
-PCOMMA                 28        ;
-ID                     29        a
-ATTR                   29        =
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 29        ;
-ID                     30        b
-ATTR                   30        =
-ID                     30        a
-PLUS                   30        +
-INTEGER_CONST          linha     ["2"]
-PCOMMA                 30        ;
-RBRACE                 31        }
-ELSE                   32        else
-IF                     32        if
-LBRACKET               32        (
-ID                     32        a
-GT                     32        >
-ID                     32        b
-RBRACKET               32        )
-LBRACE                 33        {
-ID                     34        a
-ATTR                   34        =
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 34        ;
-ID                     35        a
-ATTR                   35        =
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 35        ;
-ID                     36        b
-ATTR                   36        =
-ID                     36        a
-PLUS                   36        +
-INTEGER_CONST          linha     ["2"]
-PCOMMA                 36        ;
-RBRACE                 37        }
-ELSE                   38        else
-LBRACE                 39        {
-ID                     40        a
-ATTR                   40        =
-INTEGER_CONST          linha     ["6", "0"]
-PCOMMA                 40        ;
-ID                     41        a
-ATTR                   41        =
-INTEGER_CONST          linha     ["1", "0"]
-PCOMMA                 41        ;
-ID                     42        b
-ATTR                   42        =
-ID                     42        a
-PLUS                   42        +
-INTEGER_CONST          linha     ["2"]
-PCOMMA                 42        ;
-RBRACE                 43        }
-RBRACE                 44        }
+RBRACE                 14        }
