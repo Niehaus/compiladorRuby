@@ -1,17 +1,13 @@
-int main()
-{
-   int a = 10, b = 5;
-   int i;
+int main() {
+  int q = 123;
+  int b = 29;
+  int d = 21, c, a;
 
-   for (i = 0; i < 10; i = i + 1) {
-      if (a > b)
-      {
-         a = c;   
-      }else
-      {
-         a = b;
-      }
-      
-      
-   }
+ while (a > b)
+ { 
+  print(b);
+  a = 10;
+ }
+ 
+ 
 }

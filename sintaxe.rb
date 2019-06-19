@@ -24,6 +24,7 @@ module AnalisadorSintatico
   end
   def saida
    $anaSintax.write("#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}\n")
+   #puts "#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}\n"
   end
 
   def analise_sintatica()
@@ -157,7 +158,7 @@ module AnalisadorSintatico
     else
       retorna_erro('atribuicao')
     end
-    return node#fora ou dentro do if??
+    return node
   end
 
   def comando_se(node)
@@ -397,7 +398,7 @@ module AnalisadorSintatico
   def fator()
     if @matriz[@index][1].to_s == "ID"
       hash_simbolos()
-      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])##decidir como pegar esses valores
+      id_node = Id.new(@tabela_simbolos[@matriz[@index][0]])
       casa("ID")
       return id_node
     elsif @matriz[@index][1].to_s == "INTEGER_CONST"
@@ -412,7 +413,7 @@ module AnalisadorSintatico
       casa("LBRACKET")
       expr = expressao()
       casa("RBRACKET")
-      return expr
+      return expr 
     else
       retorna_erro('fator')
     end

@@ -43,7 +43,7 @@ require 'fileutils'
 
     def geraPython(level)
         self.children.each do |child|
-            $codPython.write(child.geraPython(level).to_s + "\n")
+            $codPython.write(child.geraPython(level).to_s)
         end
     end
 end
@@ -59,7 +59,7 @@ class Attr < AST #talvez altere
         self.dir = dir
     end
     def geraPython(level)
-         return  self.children[0].geraPython(level) + " " + self.op + " " +self.children[1].geraPython(level)
+         return  "  " * (0 + level) + self.children[0].geraPython(level) + " " + self.op + " " + self.children[1].geraPython(level) + "\n"
     end
 end
 
@@ -67,14 +67,15 @@ class If < AST
     def initialize
         super("If")
     end
+
     def geraPython(level) #achar expressão, achar caminho true, verificar se existe c_false e aí return em tdo
         if self.children[2].class == NilClass
-            return  "  " *(0 + level) +"if "  + self.children[0].geraPython(level) + ":"+ "\n" + self.children[1].geraPython(level) + "\n"
+            return "if "  + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level)
         else
             if self.children[2].children[0].nome == "If"
-                return  "  " *(0 + level) +"if "  + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level) + "\n" + "  " *(0 + level) + "el" + self.children[2].children[0].geraPython(level)
+                return "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level) + "  " * (0 + level) + "el" + self.children[2].children[0].geraPython(level)
             else
-                return  "  " *(0 + level) +"if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level) + "\n" +  "  " *(0 + level) + "else:\n" + self.children[2].geraPython(level)  
+                return "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level) + "  " * (0 + level) + "else:\n" + self.children[2].geraPython(level)  
             end
         end  
     end
@@ -86,7 +87,7 @@ class While < AST
     end
 
     def geraPython(level)
-        return "while " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level)
+        return "  " * (0 + level) + "while " + self.children[0].geraPython(level) + ":\n" +"  " * (0 + level) +  self.children[1].geraPython(level)
     end
 end
 
@@ -96,7 +97,7 @@ class For < AST
     end
 
      def geraPython(level)
-        return self.children[0].geraPython(level) + "\nwhile " + self.children[1].geraPython(level) + ":\n" + self.children[3].geraPython(level) + "\n" + "  #{self.children[2].geraPython(level)}"
+        return self.children[0].geraPython(level) + "  " * (0 + level) + "while " + self.children[1].geraPython(level) + ":\n" + self.children[3].geraPython(level) + "  " * (0 + level) +"#{self.children[2].geraPython(level)}"
     end
 end
 
@@ -106,7 +107,7 @@ class Read < AST
     end
 
     def geraPython(level)
-        return "\n" + "  " *(0 + level) + "read(#{self.children[0].tipo}(#{self.children[0].geraPython(level)}))"        
+        return "  " *(0 + level) + "read(#{self.children[0].tipo}(#{self.children[0].geraPython(level)}))" + "\n"      
     end
 end
 
@@ -116,7 +117,7 @@ class Print < AST
     end
     
     def geraPython(level)
-        return   "\n" + "  " *(0 + level) + "print(""Valor da variável a:"" + str(#{self.children[0].geraPython(level)}))"          
+        return   "  " *(0 + level) + "print(""Valor da variável #{self.children[0].geraPython(level)}:"" + str(#{self.children[0].geraPython(level)}))" + "\n"          
     end
 end
 
@@ -130,7 +131,7 @@ class Expr < AST
     end
 
     def geraPython(level)
-        return "#{self.children[0].geraPython(level)} #{self.op} #{self.children[1].geraPython(level)}"
+        return self.children[0].geraPython(level) + " " + self.op + " " + self.children[1].geraPython(level) 
     end
 end
 
@@ -140,6 +141,8 @@ class ArithOp < Expr
     def initialize(left,op,right)
         super('ArithOp',op,left,right)
     end
+
+     
 end
 
 class RelOp < Expr
@@ -193,12 +196,22 @@ class DelimitadorBloco < AST
     end
 
     def geraPython(level)
-        code = "";
+        code = ""
         self.children.each do |child|
-            code << "  " *(0 + level)
-            code << child.geraPython(level + 1).to_s
+            puts child.nome
+            if child.nome == "Attr"
+                code << child.geraPython(level + 1).to_s  
+            elsif child.nome == "If"
+                code << "    "*(0 + level)
+                code << child.geraPython(level + 1).to_s  
+            elsif child.nome == "Bloco"
+                code << child.geraPython(level + 1).to_s 
+            else
+               # code << " "*(0 + level)
+                code << child.geraPython(level + 1).to_s    
+            end
             
-        end  
+        end   
         return code
     end
     
