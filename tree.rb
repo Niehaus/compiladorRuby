@@ -13,35 +13,7 @@ require 'fileutils'
         self.level = 0
     end
 
-    def seeChild(level)
-        if self.nome == 'RelOp' or self.nome == "ArithOp"
-            $asa.write("   " *(0 + level) +"<#{self.nome} op='#{self.op}'>\n")
-        elsif self.nome == "c_true" or self.nome  == "c_false"
-            #não printa nda pra isso n aparecer
-        elsif self.nome  == "Num"
-           $asa.write("   " *(0 + level) +"<#{self.nome} value= #{self.value} type='#{self.tipo}'/>\n")
-        elsif self.nome == "Id"
-            $asa.write("   " *(0 + level) +"<#{self.nome} lexema='#{self.lexema}' type='#{self.tipo}'/>\n")
-        else
-            $asa.write("   " *(0 + level) +"<#{self.nome}>\n")
-        end
-        self.children.each do |child|
-            if child.class != String && child.class != NilClass
-                child.seeChild(level + 1)
-            else 
-                $asa.write("      " *(0 + level) + "#{child}")
-            end
-        end
-        if self.nome == "c_true" or self.nome  == "c_false"
-            #não printa nda pra isso n aparecer
-        elsif self.nome == "Id" or self.nome  == "Num"
-           #não printa nada pra isso n aparecer 
-        else
-            $asa.write("   " *(0 + level) +"</#{self.nome}>\n")
-        end 
-    end   
-
-    def espacamento(level)
+     def espacamento(level)
         deslocamento = "";
         while(level != 0)
             level = level - 1
@@ -49,6 +21,34 @@ require 'fileutils'
         end
         return deslocamento
     end
+
+    def seeChild(level)
+        if self.nome == 'RelOp' or self.nome == "ArithOp"
+            $asa.write(espacamento(level) +"<#{self.nome} op='#{self.op}'>\n")
+        elsif self.nome == "c_true" or self.nome  == "c_false"
+            #não printa nda pra isso n aparecer
+        elsif self.nome  == "Num"
+           $asa.write(espacamento(level) +"<#{self.nome} value= #{self.value} type='#{self.tipo}'/>\n")
+        elsif self.nome == "Id"
+            $asa.write(espacamento(level) +"<#{self.nome} lexema='#{self.lexema}' type='#{self.tipo}'/>\n")
+        else
+            $asa.write(espacamento(level) +"<#{self.nome}>\n")
+        end
+        self.children.each do |child|
+            if child.class != String && child.class != NilClass
+                child.seeChild(level + 1)
+            else 
+                $asa.write(espacamento(level) + "#{child}")
+            end
+        end
+        if self.nome == "c_true" or self.nome  == "c_false"
+            #não printa nda pra isso n aparecer
+        elsif self.nome == "Id" or self.nome  == "Num"
+           #não printa nada pra isso n aparecer 
+        else
+            $asa.write(espacamento(level) +"</#{self.nome}>\n")
+        end 
+    end   
 
     def geraPython(level)
         self.children.each do |child|
@@ -236,8 +236,9 @@ class DelimitadorBloco < AST
     def geraPython(level)
         code = ""
         self.children.each do |child|
-            if child.nome == "Attr" && level != 0
-                code << child.geraPython(level).to_s    
+            puts child.nome
+            if (child.nome == "Attr" || child.nome =="If") && level != 0
+                code << child.geraPython(level).to_s  
             else
                 code << child.geraPython(level + 1).to_s        
             end
