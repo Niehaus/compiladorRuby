@@ -1,21 +1,36 @@
 int main() {
-  int q = 123;
-  int b = 29;
-  int d = 21, c, a;
 
- for ( b = 0; b < 10; b = b + 1) {
-    a = (b + 20) * c;
-    if (a < b)
+  int a = 10, b = 5;
+  int i;
+
+  while (a > b)
+  {
+    while(a < b)
     {
-      a = (b + 20) * (c + d);
-      a = (a / b);
-      print(a);
-    }else
-    {
-      a = 400;
+      if (a > b)
+      {
+        if (a > b)
+        {
+          a = (b + 30) * 2 * c;
+        }
+        else
+        {
+          c = 50;
+        }
+      }
+      else
+      {
+        if (a > b)
+        {
+          a = 10;
+        }
+        else
+        {
+          c = 50;
+        }
+      }
+      
     }
-    
-}
-
-
+  }
+  
 }

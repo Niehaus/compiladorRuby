@@ -1,13 +1,14 @@
-q = 123
-b = 29
-d = 21
-b = 0
-while b < 10:
-    a = (b + 20) * c
-    if a < b:
-        a = (b + 20) * (c + d)
-        a = (a / b)
-        print("Valor da variável " : str(a))
-    else:
-        a = 400
-    b = b + 1
+a = 10
+b = 5
+while a > b:
+    while a < b:
+        if a > b:
+            if a > b:
+                a = (b + 30) * 2 * c
+            else:
+                c = 50
+        else:
+            if a > b:
+                a = 10
+            else:
+                c = 50
