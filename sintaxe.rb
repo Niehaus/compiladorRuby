@@ -21,6 +21,7 @@ module AnalisadorSintatico
     @tok_esperado
     @int_type = 0
     @float_type = 1
+    @parenteses = 0
   end
   def saida
    $anaSintax.write("#{@matriz[@index][1]}".ljust(23) + "#{@matriz[@index][2]}".ljust(10) + "#{@matriz[@index][0]}\n")
@@ -289,22 +290,22 @@ module AnalisadorSintatico
     if @matriz[@index][1].to_s == "LT" 
       op_rel()
       expr2 = adicao()
-      menor_node = RelOp.new(expr,"<",expr2)
+      menor_node = RelOp.new(expr,"<",expr2,@parenteses)
       return relacao_opc(menor_node)
     elsif @matriz[@index][1].to_s == "LE"
       op_rel()
       expr2 = adicao()
-      menorigual_node = RelOp.new(expr,"<=",expr2)
+      menorigual_node = RelOp.new(expr,"<=",expr2,@parenteses)
       return relacao_opc(menorigual_node)
     elsif @matriz[@index][1].to_s == "GT"
       op_rel()
       expr2 = adicao()
-      maior_node = RelOp.new(expr,">",expr2)
+      maior_node = RelOp.new(expr,">",expr2,@parenteses)
       return relacao_opc(maior_node)
     elsif @matriz[@index][1].to_s == "GE"
       op_rel()
       expr2 = adicao()
-      maiorigual_node = RelOp.new(expr,">=",expr2)
+      maiorigual_node = RelOp.new(expr,">=",expr2,@parenteses)
       return relacao_opc(maiorigual_node)
     else
       return expr
@@ -338,12 +339,12 @@ module AnalisadorSintatico
     if @matriz[@index][1].to_s == "PLUS" 
       op_adicao()
       expr2 = termo()
-      plus_node = ArithOp.new(expr,"+",expr2)
+      plus_node = ArithOp.new(expr,"+",expr2,@parenteses)
       return adicao_opc(plus_node)
     elsif  @matriz[@index][1].to_s == "MINUS"
       op_adicao()
       expr2 = termo()
-      minus_node = ArithOp.new(expr,"-",expr2)
+      minus_node = ArithOp.new(expr,"-",expr2,@parenteses)
       return adicao_opc(minus_node)
     else
       return expr
@@ -373,12 +374,12 @@ module AnalisadorSintatico
     if @matriz[@index][1].to_s == "MULT" 
       op_mult()
       expr2 = fator()
-      mult_node = ArithOp.new(expr,"*",expr2)
+      mult_node = ArithOp.new(expr,"*",expr2,@parenteses)
       return termo_opc(mult_node)
     elsif @matriz[@index][1].to_s == "DIV"
       op_mult()
       expr2 = fator()
-      div_node = ArithOp.new(expr,"/",expr2)
+      div_node = ArithOp.new(expr,"/",expr2,@parenteses)
       return termo_opc(div_node)
     else
       return expr
@@ -411,8 +412,10 @@ module AnalisadorSintatico
       return num_node
     elsif @matriz[@index][1].to_s == "LBRACKET"
       casa("LBRACKET")
+      @parenteses = 1
       expr = expressao()
       casa("RBRACKET")
+      @parenteses = 0
       return expr 
     else
       retorna_erro('fator')
