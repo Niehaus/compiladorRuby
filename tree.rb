@@ -82,26 +82,22 @@ class If < AST
         super("If")
     end
 
-    #def geraPython(level) #achar expressão, achar caminho true, verificar se existe c_false e aí return em tdo
-       # if self.children[2].class == NilClass 
-        #    return "    " * (0 + level) + "if "  + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level)                
-        #else
-         #   if self.children[2].children[0].nome == "If"
-          #      return "    " * (0 + level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level)  + "    " * (0 + level) + "el" + self.children[2].children[0].geraPython(level - 1)
-          #  else             
-           #     return "    " * (0 + level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level) + "    " * (0 + level) + "else:\n" + self.children[2].geraPython(level)                 
-           # end
-        #end  
-    #end
-
     def geraPython(level)
-        resultado = ""
         if self.children[2].class == NilClass
             return espacamento(level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level + 1)
+        elsif self.children[2].children[0].nome == "If"
+            if self.children[2].children[0].children[2].class != NilClass
+                return espacamento(level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level + 1) + 
+                espacamento(level) + "elif " + self.children[2].children[0].children[0].geraPython(level) + ":\n" + self.children[2].children[0].children[1].geraPython(level + 1) + espacamento(level) + "else:\n" + self.children[2].children[0].children[2].geraPython(level + 1)
+            else
+                return espacamento(level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level + 1) + 
+                espacamento(level) + "elif " + self.children[2].children[0].children[0].geraPython(level) + ":\n" + self.children[2].children[0].children[1].geraPython(level + 1)    
+            end
         else
             return espacamento(level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level + 1) + espacamento(level) + "else:\n" + self.children[2].geraPython(level + 1)                
         end
     end
+
 end
 
 class While < AST
@@ -236,8 +232,6 @@ class DelimitadorBloco < AST
     def geraPython(level)
         code = ""
         self.children.each do |child|
-            puts level
-            puts child.nome
             code << child.geraPython(level).to_s    
                     
         end   

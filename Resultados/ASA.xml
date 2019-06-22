@@ -7,6 +7,14 @@
         <Id lexema='b' type='Integer'/>
         <Num value= 5 type='Integer'/>
     </Attr>
+    <Attr>
+        <Id lexema='c' type='Integer'/>
+        <Num value= 2 type='Integer'/>
+    </Attr>
+    <Attr>
+        <Id lexema='d' type='Integer'/>
+        <Num value= 10 type='Integer'/>
+    </Attr>
     <While>
         <RelOp op='>'>
             <Id lexema='a' type='Integer'/>
@@ -25,54 +33,46 @@
                                     <Id lexema='b' type='Integer'/>
                                 </RelOp>
                                     <Bloco>
-                                        <If>
-                                            <RelOp op='>'>
-                                                <Id lexema='a' type='Integer'/>
-                                                <Id lexema='b' type='Integer'/>
-                                            </RelOp>
-                                                <Bloco>
-                                                    <Attr>
-                                                        <Id lexema='a' type='Integer'/>
-                                                        <ArithOp op='*'>
-                                                            <ArithOp op='*'>
-                                                                <ArithOp op='+'>
-                                                                    <Id lexema='b' type='Integer'/>
-                                                                    <Num value= 30 type='Integer'/>
-                                                                </ArithOp>
-                                                                <Num value= 2 type='Integer'/>
-                                                            </ArithOp>
-                                                            <Id lexema='c' type='Integer'/>
-                                                        </ArithOp>
-                                                    </Attr>
-                                                </Bloco>
-                                                <Bloco>
-                                                    <Attr>
-                                                        <Id lexema='c' type='Integer'/>
-                                                        <Num value= 50 type='Integer'/>
-                                                    </Attr>
-                                                </Bloco>
-                                        </If>
+                                        <Attr>
+                                            <Id lexema='a' type='Integer'/>
+                                            <Num value= 50 type='Integer'/>
+                                        </Attr>
+                                        <Attr>
+                                            <Id lexema='a' type='Integer'/>
+                                            <ArithOp op='*'>
+                                                <ArithOp op='*'>
+                                                    <ArithOp op='+'>
+                                                        <Id lexema='b' type='Integer'/>
+                                                        <Num value= 30 type='Integer'/>
+                                                    </ArithOp>
+                                                    <Num value= 2 type='Integer'/>
+                                                </ArithOp>
+                                                <Id lexema='c' type='Integer'/>
+                                            </ArithOp>
+                                        </Attr>
                                     </Bloco>
-                                    <Bloco>
-                                        <If>
-                                            <RelOp op='>'>
-                                                <Id lexema='a' type='Integer'/>
-                                                <Id lexema='b' type='Integer'/>
-                                            </RelOp>
-                                                <Bloco>
-                                                    <Attr>
-                                                        <Id lexema='a' type='Integer'/>
-                                                        <Num value= 10 type='Integer'/>
-                                                    </Attr>
-                                                </Bloco>
-                                                <Bloco>
-                                                    <Attr>
-                                                        <Id lexema='c' type='Integer'/>
-                                                        <Num value= 50 type='Integer'/>
-                                                    </Attr>
-                                                </Bloco>
-                                        </If>
-                                    </Bloco>
+                                    <If>
+                                        <RelOp op='>'>
+                                            <Id lexema='d' type='Integer'/>
+                                            <Num value= 10 type='Integer'/>
+                                        </RelOp>
+                                            <Bloco>
+                                                <Attr>
+                                                    <Id lexema='d' type='Integer'/>
+                                                    <Num value= 50 type='Integer'/>
+                                                </Attr>
+                                            </Bloco>
+                                            <Bloco>
+                                                <Attr>
+                                                    <Id lexema='a' type='Integer'/>
+                                                    <Num value= 30 type='Integer'/>
+                                                </Attr>
+                                                <Attr>
+                                                    <Id lexema='b' type='Integer'/>
+                                                    <Num value= 70 type='Integer'/>
+                                                </Attr>
+                                            </Bloco>
+                                    </If>
                             </If>
                         </Bloco>
                 </While>
