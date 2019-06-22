@@ -1,24 +1,14 @@
 int main() {
 
   int a = 10, b = 5;
-  int i,c,d;
+  int i;
 
-  c = 2;
-  d = 10;
-   while (a > b) {
-    while(a < b) {
-      if (a > b) {
-        a = 50;
-        a = (b + 30) * 2 * c;
-      }else if (d > 10) {
-        d = 50;
-      }else
-      {
-        a = 30;
-        b = 70;
-      }
-                
+  for (i = 0; i < 10; i = i + 1)  {
+    if (a < 10)     {
+      a = (b + 1) * 3;
+    } else {
+      a = 30;
     }
+    b = 60;
   }
-  
 }
