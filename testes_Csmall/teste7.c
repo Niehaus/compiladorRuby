@@ -8,7 +8,7 @@ int main()
     y = ((2 * x) / y);
   else if (x > y)
     x = a;
-  if(x != a)
+  if(x > a)
   {
     x = 3504;
     z = 23.4;

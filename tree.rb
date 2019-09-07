@@ -93,6 +93,7 @@ class If < AST
                 return espacamento(level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level + 1) + 
                 espacamento(level) + "elif " + self.children[2].children[0].children[0].geraPython(level) + ":\n" + self.children[2].children[0].children[1].geraPython(level + 1)    
             end
+            return espacamento(level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level + 1) + espacamento(level) + "el" + self.children[2].children[0].geraPython(level - 1)                
         else
             return espacamento(level) + "if " + self.children[0].geraPython(level) + ":\n" + self.children[1].geraPython(level + 1) + espacamento(level) + "else:\n" + self.children[2].geraPython(level + 1)                
         end
@@ -140,7 +141,7 @@ class Print < AST
     end
     
     def geraPython(level)
-        return espacamento(level) + "print(\"Valor da variável " + "\" : " + "str(" + self.children[0].geraPython(level) +"))" + "\n"          
+        return espacamento(level) + "print(\"Valor da variável " + "\" + " + "str(" + self.children[0].geraPython(level) +"))" + "\n"          
     end
 end
 
